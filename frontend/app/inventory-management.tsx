@@ -1027,4 +1027,77 @@ const styles = StyleSheet.create({
   photoDateText: { ...typography.caption, fontSize: 10, color: colors.white },
   noPhotos: { alignItems: 'center', paddingVertical: spacing.xl },
   noPhotosText: { ...typography.body, color: colors.gray[500], marginTop: spacing.sm },
+  // Selector styles
+  selectorButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.gray[300],
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.sm,
+  },
+  selectorText: {
+    ...typography.body,
+    color: colors.gray[900],
+  },
+  selectorPlaceholder: {
+    ...typography.body,
+    color: colors.gray[400],
+  },
+  selectorDisabled: {
+    backgroundColor: colors.gray[100],
+  },
+  // Picker Modal styles
+  pickerModalContainer: {
+    flex: 1,
+    backgroundColor: colors.white,
+  },
+  pickerHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray[200],
+  },
+  pickerTitle: {
+    ...typography.h3,
+    color: colors.gray[900],
+  },
+  pickerSearchInput: {
+    margin: spacing.md,
+    backgroundColor: colors.gray[100],
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm + 4,
+    ...typography.body,
+    color: colors.gray[900],
+  },
+  pickerList: {
+    flex: 1,
+  },
+  pickerItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray[100],
+  },
+  pickerItemSelected: {
+    backgroundColor: colors.primary[50],
+  },
+  pickerItemText: {
+    ...typography.body,
+    color: colors.gray[800],
+  },
+  pickerItemTextSelected: {
+    color: colors.primary[700],
+    fontWeight: '600',
+  },
 });
