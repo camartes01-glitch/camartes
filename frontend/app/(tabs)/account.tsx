@@ -36,6 +36,7 @@ interface MenuItem {
 export default function AccountScreen() {
   const router = useRouter();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const [profile, setProfile] = useState<any>(null);
   const [analytics, setAnalytics] = useState<any>(null);
   const [refreshing, setRefreshing] = useState(false);
