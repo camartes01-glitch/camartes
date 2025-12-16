@@ -550,15 +550,17 @@ const styles = StyleSheet.create({
     marginRight: spacing.md,
   },
   menuItemContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
     flex: 1,
   },
   menuItemText: {
     ...typography.body,
     color: colors.gray[900],
     fontWeight: '600',
+  },
+  menuItemSubtitle: {
+    ...typography.caption,
+    color: colors.gray[500],
+    marginTop: 2,
   },
   menuBadge: {
     backgroundColor: colors.primary[500],
