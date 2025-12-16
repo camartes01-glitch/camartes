@@ -8,14 +8,16 @@ import {
   Dimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import { colors, spacing, borderRadius, typography } from '../constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const { width, height } = Dimensions.get('window');
 
 export default function LoginScreen() {
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <LinearGradient
@@ -26,24 +28,32 @@ export default function LoginScreen() {
       <View style={styles.circle1} />
       <View style={styles.circle2} />
 
+      {/* Language Switcher at top */}
+      <View style={styles.languageContainer}>
+        <LanguageSwitcher compact />
+      </View>
+
       <View style={styles.content}>
         {/* Logo */}
         <View style={styles.logoContainer}>
-          <Ionicons name="camera" size={60} color={colors.primary[500]} />
-          <Text style={styles.logoText}>Camartes</Text>
-          <Text style={styles.tagline}>Photography Ecosystem Platform</Text>
+          <Image 
+            source={require('../assets/images/camartes-logo.png')} 
+            style={styles.logo}
+            resizeMode="contain"
+          />
+          <Text style={styles.tagline}>{t('login.title')}</Text>
         </View>
 
         {/* Description */}
         <View style={styles.descriptionContainer}>
           <Text style={styles.description}>
-            Connect with professional photographers, videographers, and creative services.
+            {t('login.subtitle')}
           </Text>
           <Text style={styles.features}>
-            {"\u2022"} Book photography services{"\n"}
-            {"\u2022"} Rent camera equipment{"\n"}
-            {"\u2022"} Discover talented professionals{"\n"}
-            {"\u2022"} Manage your creative business
+            {"\u2022"} {t('login.bookServices')}{"\n"}
+            {"\u2022"} {t('login.rentEquipment')}{"\n"}
+            {"\u2022"} {t('login.discoverProfessionals')}{"\n"}
+            {"\u2022"} {t('login.manageBusiness')}
           </Text>
         </View>
 
@@ -59,12 +69,12 @@ export default function LoginScreen() {
             end={{ x: 1, y: 0 }}
             style={styles.buttonGradient}
           >
-            <Text style={styles.buttonText}>Continue with Google</Text>
+            <Text style={styles.buttonText}>{t('login.continueWithGoogle')}</Text>
           </LinearGradient>
         </TouchableOpacity>
 
         <Text style={styles.footer}>
-          By continuing, you agree to our Terms of Service and Privacy Policy
+          {t('login.termsAgreement')}
         </Text>
       </View>
     </LinearGradient>
@@ -95,6 +105,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary[200],
     opacity: 0.3,
   },
+  languageContainer: {
+    position: 'absolute',
+    top: 60,
+    right: spacing.lg,
+    zIndex: 10,
+  },
   content: {
     flex: 1,
     justifyContent: 'center',
@@ -106,17 +122,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.xxl,
   },
-  logoText: {
-    ...typography.h1,
-    fontSize: 42,
-    color: colors.primary[600],
-    marginTop: spacing.md,
-    fontWeight: '800',
+  logo: {
+    width: 200,
+    height: 120,
   },
   tagline: {
     ...typography.bodySmall,
     color: colors.gray[600],
-    marginTop: spacing.xs,
+    marginTop: spacing.md,
+    textAlign: 'center',
   },
   descriptionContainer: {
     marginBottom: spacing.xxl,
