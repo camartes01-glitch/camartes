@@ -122,17 +122,19 @@ export default function AccountScreen() {
     },
     {
       id: 'inventory',
-      title: 'Inventory Management',
+      title: 'Rental Inventory',
       icon: 'cube-outline',
       route: '/inventory-management',
       color: colors.primary[500],
+      subtitle: 'Camera Rental Business',
     },
     {
       id: 'equipment',
-      title: 'Equipment Listing',
+      title: 'My Equipment',
       icon: 'camera-outline',
       route: '/my-equipment',
       color: colors.orange[500],
+      subtitle: 'Showcase your gear',
     },
     {
       id: 'packages',
