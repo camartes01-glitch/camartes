@@ -557,6 +557,24 @@ export default function InventoryManagementScreen() {
                     <Ionicons name="trash" size={20} color={colors.error} />
                   </TouchableOpacity>
                 </View>
+                
+                {/* QC Photo Buttons */}
+                <View style={styles.qcButtonRow}>
+                  <TouchableOpacity
+                    style={styles.qcButton}
+                    onPress={() => { setShowQCModal({ item, qcType: 'delivery' }); loadQCPhotos(item.inventory_id); }}
+                  >
+                    <Ionicons name="camera" size={16} color={colors.success} />
+                    <Text style={[styles.qcButtonText, { color: colors.success }]}>Out QC</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.qcButton}
+                    onPress={() => { setShowQCModal({ item, qcType: 'return' }); loadQCPhotos(item.inventory_id); }}
+                  >
+                    <Ionicons name="camera" size={16} color={colors.info} />
+                    <Text style={[styles.qcButtonText, { color: colors.info }]}>Return QC</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             ))
           ) : (
