@@ -108,8 +108,8 @@ export default function LanguageSwitcher({ compact = false }: LanguageSwitcherPr
         activeOpacity={0.7}
       >
         <View style={styles.menuItemLeft}>
-          <View style={[styles.menuIconContainer, { backgroundColor: colors.purple[100] }]}>
-            <Ionicons name="language" size={24} color={colors.purple[600]} />
+          <View style={[styles.menuIconContainer, { backgroundColor: colors.secondary[100] }]}>
+            <Ionicons name="language" size={24} color={colors.secondary[600]} />
           </View>
           <View style={styles.menuItemContent}>
             <Text style={styles.menuItemText}>{t('common.language')}</Text>
