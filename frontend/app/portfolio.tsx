@@ -178,11 +178,11 @@ export default function EnhancedPortfolioScreen() {
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name=\"arrow-back\" size={24} color={colors.gray[900]} />
+            <Ionicons name="arrow-back" size={24} color={colors.gray[900]} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Portfolio & Profile</Text>
           <TouchableOpacity onPress={() => setShowAddModal(true)}>
-            <Ionicons name=\"add-circle\" size={28} color={colors.primary[600]} />
+            <Ionicons name="add-circle" size={28} color={colors.primary[600]} />
           </TouchableOpacity>
         </View>
 
@@ -193,7 +193,7 @@ export default function EnhancedPortfolioScreen() {
             onPress={() => setActiveTab('portfolio')}
           >
             <Ionicons
-              name=\"images\"
+              name="images"
               size={20}
               color={activeTab === 'portfolio' ? colors.white : colors.gray[600]}
             />
@@ -207,7 +207,7 @@ export default function EnhancedPortfolioScreen() {
             onPress={() => setActiveTab('profile')}
           >
             <Ionicons
-              name=\"person\"
+              name="person"
               size={20}
               color={activeTab === 'profile' ? colors.white : colors.gray[600]}
             />
@@ -251,7 +251,7 @@ export default function EnhancedPortfolioScreen() {
                 </View>
               ) : (
                 <View style={styles.emptyState}>
-                  <Ionicons name=\"images-outline\" size={64} color={colors.gray[300]} />
+                  <Ionicons name="images-outline" size={64} color={colors.gray[300]} />
                   <Text style={styles.emptyText}>No portfolio items</Text>
                   <Text style={styles.emptySubtext}>Add your work to showcase</Text>
                 </View>
@@ -268,7 +268,7 @@ export default function EnhancedPortfolioScreen() {
                   style={[styles.input, styles.textArea]}
                   value={bio}
                   onChangeText={setBio}
-                  placeholder=\"Tell clients about yourself and your photography journey...\"
+                  placeholder="Tell clients about yourself and your photography journey..."
                   placeholderTextColor={colors.gray[400]}
                   multiline
                   numberOfLines={4}
@@ -281,7 +281,7 @@ export default function EnhancedPortfolioScreen() {
                   style={styles.input}
                   value={specialization}
                   onChangeText={setSpecialization}
-                  placeholder=\"e.g., Wedding Photography, Portrait Photography\"
+                  placeholder="e.g., Wedding Photography, Portrait Photography"
                   placeholderTextColor={colors.gray[400]}
                 />
               </View>
@@ -292,9 +292,9 @@ export default function EnhancedPortfolioScreen() {
                   style={styles.input}
                   value={yearsExperience}
                   onChangeText={setYearsExperience}
-                  placeholder=\"e.g., 5\"
+                  placeholder="e.g., 5"
                   placeholderTextColor={colors.gray[400]}
-                  keyboardType=\"numeric\"
+                  keyboardType="numeric"
                 />
               </View>
 
@@ -304,7 +304,7 @@ export default function EnhancedPortfolioScreen() {
                   style={[styles.input, styles.textArea]}
                   value={achievements}
                   onChangeText={setAchievements}
-                  placeholder=\"List your achievements, awards, and recognitions...\"
+                  placeholder="List your achievements, awards, and recognitions..."
                   placeholderTextColor={colors.gray[400]}
                   multiline
                   numberOfLines={4}
@@ -332,13 +332,13 @@ export default function EnhancedPortfolioScreen() {
                   <Text style={styles.previewTitle}>Profile Preview</Text>
                   {specialization && (
                     <View style={styles.previewRow}>
-                      <Ionicons name=\"briefcase\" size={20} color={colors.primary[600]} />
+                      <Ionicons name="briefcase" size={20} color={colors.primary[600]} />
                       <Text style={styles.previewText}>{specialization}</Text>
                     </View>
                   )}
                   {yearsExperience && (
                     <View style={styles.previewRow}>
-                      <Ionicons name=\"time\" size={20} color={colors.primary[600]} />
+                      <Ionicons name="time" size={20} color={colors.primary[600]} />
                       <Text style={styles.previewText}>{yearsExperience} years experience</Text>
                     </View>
                   )}
@@ -360,7 +360,7 @@ export default function EnhancedPortfolioScreen() {
               <View style={styles.modalHeader}>
                 <Text style={styles.modalTitle}>Add Portfolio Item</Text>
                 <TouchableOpacity onPress={() => setShowAddModal(false)}>
-                  <Ionicons name=\"close\" size={28} color={colors.gray[600]} />
+                  <Ionicons name="close" size={28} color={colors.gray[600]} />
                 </TouchableOpacity>
               </View>
 
@@ -371,7 +371,7 @@ export default function EnhancedPortfolioScreen() {
                     style={styles.input}
                     value={newTitle}
                     onChangeText={setNewTitle}
-                    placeholder=\"e.g., Summer Wedding 2024\"
+                    placeholder="e.g., Summer Wedding 2024"
                     placeholderTextColor={colors.gray[400]}
                   />
                 </View>
@@ -409,7 +409,7 @@ export default function EnhancedPortfolioScreen() {
                     style={[styles.input, styles.textArea]}
                     value={newDescription}
                     onChangeText={setNewDescription}
-                    placeholder=\"Describe this project...\"
+                    placeholder="Describe this project..."
                     placeholderTextColor={colors.gray[400]}
                     multiline
                     numberOfLines={3}
@@ -458,4 +458,166 @@ export default function EnhancedPortfolioScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   gradient: { flex: 1 },
-  header: {\n    flexDirection: 'row',\n    justifyContent: 'space-between',\n    alignItems: 'center',\n    padding: spacing.lg,\n    backgroundColor: colors.white,\n    ...shadows.sm,\n  },\n  headerTitle: { ...typography.h4, color: colors.gray[900] },\n  tabsContainer: {\n    flexDirection: 'row',\n    padding: spacing.md,\n    gap: spacing.sm,\n    backgroundColor: colors.white,\n  },\n  tab: {\n    flex: 1,\n    flexDirection: 'row',\n    alignItems: 'center',\n    justifyContent: 'center',\n    gap: spacing.xs,\n    paddingVertical: spacing.sm + 2,\n    borderRadius: borderRadius.md,\n    backgroundColor: colors.gray[100],\n  },\n  tabActive: { backgroundColor: colors.primary[500] },\n  tabText: { ...typography.bodySmall, fontWeight: '600', color: colors.gray[600] },\n  tabTextActive: { color: colors.white },\n  scrollView: { flex: 1 },\n  scrollContent: { padding: spacing.lg },\n  portfolioGrid: {\n    flexDirection: 'row',\n    flexWrap: 'wrap',\n    gap: spacing.md,\n  },\n  portfolioCard: {\n    width: (width - spacing.lg * 2 - spacing.md) / 2,\n    height: 200,\n    borderRadius: borderRadius.md,\n    overflow: 'hidden',\n    ...shadows.md,\n  },\n  portfolioImage: { width: '100%', height: '100%', resizeMode: 'cover' },\n  portfolioOverlay: {\n    position: 'absolute',\n    bottom: 0,\n    left: 0,\n    right: 0,\n    padding: spacing.sm,\n  },\n  portfolioTitle: { ...typography.bodySmall, color: colors.white, fontWeight: '700' },\n  categoryBadge: {\n    alignSelf: 'flex-start',\n    backgroundColor: colors.primary[500],\n    paddingHorizontal: spacing.xs,\n    paddingVertical: 2,\n    borderRadius: borderRadius.sm,\n    marginTop: 4,\n  },\n  categoryText: { ...typography.caption, fontSize: 10, color: colors.white, fontWeight: '600' },\n  emptyState: { alignItems: 'center', paddingVertical: spacing.xxl * 2 },\n  emptyText: { ...typography.h4, color: colors.gray[500], marginTop: spacing.md },\n  emptySubtext: { ...typography.body, color: colors.gray[400], marginTop: spacing.xs },\n  profileForm: { gap: spacing.md },\n  sectionTitle: { ...typography.h3, color: colors.gray[900], marginBottom: spacing.md },\n  inputGroup: { marginBottom: spacing.md },\n  label: { ...typography.bodySmall, fontWeight: '600', color: colors.gray[700], marginBottom: spacing.sm },\n  input: {\n    backgroundColor: colors.white,\n    borderWidth: 1,\n    borderColor: colors.gray[300],\n    borderRadius: borderRadius.md,\n    paddingHorizontal: spacing.md,\n    paddingVertical: spacing.sm + 4,\n    ...typography.body,\n    color: colors.gray[900],\n  },\n  textArea: { minHeight: 100, textAlignVertical: 'top' },\n  saveButton: { marginTop: spacing.lg },\n  saveGradient: {\n    paddingVertical: spacing.md,\n    borderRadius: borderRadius.md,\n    alignItems: 'center',\n  },\n  saveText: { ...typography.body, color: colors.white, fontWeight: '600' },\n  previewCard: {\n    backgroundColor: colors.white,\n    padding: spacing.lg,\n    borderRadius: borderRadius.lg,\n    marginTop: spacing.xl,\n    ...shadows.lg,\n  },\n  previewTitle: { ...typography.h4, color: colors.gray[900], marginBottom: spacing.md },\n  previewRow: {\n    flexDirection: 'row',\n    alignItems: 'center',\n    gap: spacing.sm,\n    marginBottom: spacing.sm,\n  },\n  previewText: { ...typography.body, color: colors.gray[700] },\n  bioPreview: {\n    marginTop: spacing.md,\n    paddingTop: spacing.md,\n    borderTopWidth: 1,\n    borderTopColor: colors.gray[200],\n  },\n  bioText: { ...typography.body, color: colors.gray[700], lineHeight: 22 },\n  modalContainer: {\n    position: 'absolute',\n    top: 0,\n    left: 0,\n    right: 0,\n    bottom: 0,\n    backgroundColor: 'rgba(0,0,0,0.5)',\n    justifyContent: 'flex-end',\n  },\n  modalContent: {\n    backgroundColor: colors.white,\n    borderTopLeftRadius: borderRadius.xl,\n    borderTopRightRadius: borderRadius.xl,\n    padding: spacing.lg,\n    maxHeight: '90%',\n  },\n  modalHeader: {\n    flexDirection: 'row',\n    justifyContent: 'space-between',\n    alignItems: 'center',\n    marginBottom: spacing.lg,\n  },\n  modalTitle: { ...typography.h3, color: colors.gray[900] },\n  categoryRow: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.md },\n  categoryChip: {\n    paddingHorizontal: spacing.md,\n    paddingVertical: spacing.sm,\n    borderRadius: borderRadius.full,\n    backgroundColor: colors.gray[100],\n    borderWidth: 1,\n    borderColor: colors.gray[300],\n  },\n  categoryChipActive: {\n    backgroundColor: colors.primary[500],\n    borderColor: colors.primary[500],\n  },\n  categoryChipText: { ...typography.bodySmall, fontWeight: '600', color: colors.gray[600] },\n  categoryChipTextActive: { color: colors.white },\n  imagePickerButton: { marginVertical: spacing.md },\n  imagePickerGradient: {\n    flexDirection: 'row',\n    alignItems: 'center',\n    justifyContent: 'center',\n    gap: spacing.sm,\n    paddingVertical: spacing.md,\n    borderRadius: borderRadius.md,\n  },\n  imagePickerText: { ...typography.body, color: colors.secondary[700], fontWeight: '600' },\n  submitButton: { marginTop: spacing.lg },\n  submitGradient: {\n    paddingVertical: spacing.md,\n    borderRadius: borderRadius.md,\n    alignItems: 'center',\n  },\n  submitText: { ...typography.body, color: colors.white, fontWeight: '600' },\n});\n
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.lg,
+    backgroundColor: colors.white,
+    ...shadows.sm,
+  },
+  headerTitle: { ...typography.h4, color: colors.gray[900] },
+  tabsContainer: {
+    flexDirection: 'row',
+    padding: spacing.md,
+    gap: spacing.sm,
+    backgroundColor: colors.white,
+  },
+  tab: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.sm + 2,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.gray[100],
+  },
+  tabActive: { backgroundColor: colors.primary[500] },
+  tabText: { ...typography.bodySmall, fontWeight: '600', color: colors.gray[600] },
+  tabTextActive: { color: colors.white },
+  scrollView: { flex: 1 },
+  scrollContent: { padding: spacing.lg },
+  portfolioGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.md,
+  },
+  portfolioCard: {
+    width: (width - spacing.lg * 2 - spacing.md) / 2,
+    height: 200,
+    borderRadius: borderRadius.md,
+    overflow: 'hidden',
+    ...shadows.md,
+  },
+  portfolioImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  portfolioOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: spacing.sm,
+  },
+  portfolioTitle: { ...typography.bodySmall, color: colors.white, fontWeight: '700' },
+  categoryBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: colors.primary[500],
+    paddingHorizontal: spacing.xs,
+    paddingVertical: 2,
+    borderRadius: borderRadius.sm,
+    marginTop: 4,
+  },
+  categoryText: { ...typography.caption, fontSize: 10, color: colors.white, fontWeight: '600' },
+  emptyState: { alignItems: 'center', paddingVertical: spacing.xxl * 2 },
+  emptyText: { ...typography.h4, color: colors.gray[500], marginTop: spacing.md },
+  emptySubtext: { ...typography.body, color: colors.gray[400], marginTop: spacing.xs },
+  profileForm: { gap: spacing.md },
+  sectionTitle: { ...typography.h3, color: colors.gray[900], marginBottom: spacing.md },
+  inputGroup: { marginBottom: spacing.md },
+  label: { ...typography.bodySmall, fontWeight: '600', color: colors.gray[700], marginBottom: spacing.sm },
+  input: {
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.gray[300],
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm + 4,
+    ...typography.body,
+    color: colors.gray[900],
+  },
+  textArea: { minHeight: 100, textAlignVertical: 'top' },
+  saveButton: { marginTop: spacing.lg },
+  saveGradient: {
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.md,
+    alignItems: 'center',
+  },
+  saveText: { ...typography.body, color: colors.white, fontWeight: '600' },
+  previewCard: {
+    backgroundColor: colors.white,
+    padding: spacing.lg,
+    borderRadius: borderRadius.lg,
+    marginTop: spacing.xl,
+    ...shadows.lg,
+  },
+  previewTitle: { ...typography.h4, color: colors.gray[900], marginBottom: spacing.md },
+  previewRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
+  },
+  previewText: { ...typography.body, color: colors.gray[700] },
+  bioPreview: {
+    marginTop: spacing.md,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray[200],
+  },
+  bioText: { ...typography.body, color: colors.gray[700], lineHeight: 22 },
+  modalContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: colors.white,
+    borderTopLeftRadius: borderRadius.xl,
+    borderTopRightRadius: borderRadius.xl,
+    padding: spacing.lg,
+    maxHeight: '90%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.lg,
+  },
+  modalTitle: { ...typography.h3, color: colors.gray[900] },
+  categoryRow: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.md },
+  categoryChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.gray[100],
+    borderWidth: 1,
+    borderColor: colors.gray[300],
+  },
+  categoryChipActive: {
+    backgroundColor: colors.primary[500],
+    borderColor: colors.primary[500],
+  },
+  categoryChipText: { ...typography.bodySmall, fontWeight: '600', color: colors.gray[600] },
+  categoryChipTextActive: { color: colors.white },
+  imagePickerButton: { marginVertical: spacing.md },
+  imagePickerGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.md,
+  },
+  imagePickerText: { ...typography.body, color: colors.secondary[700], fontWeight: '600' },
+  submitButton: { marginTop: spacing.lg },
+  submitGradient: {
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.md,
+    alignItems: 'center',
+  },
+  submitText: { ...typography.body, color: colors.white, fontWeight: '600' },
+});
