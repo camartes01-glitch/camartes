@@ -4,22 +4,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import en from './locales/en.json';
 import hi from './locales/hi.json';
-import ta from './locales/ta.json';
-import te from './locales/te.json';
-import kn from './locales/kn.json';
-import ml from './locales/ml.json';
 import bn from './locales/bn.json';
 import mr from './locales/mr.json';
+import te from './locales/te.json';
+import ta from './locales/ta.json';
+import gu from './locales/gu.json';
+import ur from './locales/ur.json';
+import kn from './locales/kn.json';
+import or from './locales/or.json';
+import ml from './locales/ml.json';
 
 export const LANGUAGES = [
   { code: 'en', name: 'English', nativeName: 'English' },
   { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी' },
-  { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்' },
-  { code: 'te', name: 'Telugu', nativeName: 'తెలుగు' },
-  { code: 'kn', name: 'Kannada', nativeName: 'ಕನ್ನಡ' },
-  { code: 'ml', name: 'Malayalam', nativeName: 'മലയാളം' },
   { code: 'bn', name: 'Bengali', nativeName: 'বাংলা' },
   { code: 'mr', name: 'Marathi', nativeName: 'मराठी' },
+  { code: 'te', name: 'Telugu', nativeName: 'తెలుగు' },
+  { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்' },
+  { code: 'gu', name: 'Gujarati', nativeName: 'ગુજરાતી' },
+  { code: 'ur', name: 'Urdu', nativeName: 'اردو' },
+  { code: 'kn', name: 'Kannada', nativeName: 'ಕನ್ನಡ' },
+  { code: 'or', name: 'Odia', nativeName: 'ଓଡ଼ିଆ' },
+  { code: 'ml', name: 'Malayalam', nativeName: 'മലയാളം' },
 ];
 
 const LANGUAGE_DETECTOR = {
