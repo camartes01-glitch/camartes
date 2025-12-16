@@ -1,0 +1,111 @@
+{
+  "common": {
+    "signIn": "Google सह साइन इन करा",
+    "signOut": "लॉगआउट",
+    "dashboard": "डॅशबोर्ड",
+    "home": "होम",
+    "services": "सेवा",
+    "account": "खाते",
+    "bookings": "बुकिंग",
+    "messages": "संदेश",
+    "back": "मागे",
+    "continue": "सुरू ठेवा",
+    "save": "बदल जतन करा",
+    "saving": "जतन होत आहे...",
+    "loading": "लोड होत आहे...",
+    "viewProfile": "प्रोफाइल पहा",
+    "bookNow": "आता बुक करा",
+    "help": "मदत",
+    "feedback": "अभिप्राय",
+    "language": "भाषा",
+    "cancel": "रद्द करा",
+    "delete": "हटवा",
+    "edit": "संपादन",
+    "add": "जोडा",
+    "search": "शोधा"
+  },
+  "home": {
+    "title": "फोटोग्राफी इकोसिस्टम प्लॅटफॉर्म",
+    "subtitle": "व्यावसायिकांशी कनेक्ट व्हा आणि तुमचा फोटोग्राफी व्यवसाय वाढवा",
+    "welcome": "स्वागत",
+    "freelancerServices": "फ्रीलान्सर सेवा",
+    "businessServices": "व्यावसायिक सेवा",
+    "latestNews": "नवीनतम फोटोग्राफी बातम्या",
+    "createBooking": "बुकिंग तयार करा"
+  },
+  "services": {
+    "photographer": "फोटोग्राफर",
+    "videographer": "व्हिडिओग्राफर",
+    "albumDesigner": "अल्बम डिझायनर",
+    "videoEditor": "व्हिडिओ एडिटर",
+    "webLive": "वेब लाइव्ह",
+    "ledWall": "LED वॉल",
+    "flyCam": "फ्लाय कॅम",
+    "photographyFirm": "फोटोग्राफी फर्म",
+    "cameraRental": "कॅमेरा भाडे",
+    "serviceCentres": "सर्व्हिस सेंटर",
+    "outdoorStudios": "आउटडोर स्टुडिओ",
+    "editingStudios": "एडिटिंग स्टुडिओ",
+    "printingLabs": "प्रिंटिंग लॅब",
+    "browseServices": "सेवा ब्राउझ करा",
+    "availableProviders": "उपलब्ध प्रदाते",
+    "noProvidersYet": "अद्याप प्रदाते नाहीत",
+    "yearsExperience": "वर्षांचा अनुभव",
+    "from": "पासून"
+  },
+  "login": {
+    "title": "फोटोग्राफी इकोसिस्टम प्लॅटफॉर्म",
+    "subtitle": "फोटोग्राफी व्यावसायिक आणि व्यवसायांशी कनेक्ट व्हा"
+  },
+  "account": {
+    "editProfile": "प्रोफाइल संपादन",
+    "myServices": "माझ्या सेवा",
+    "portfolio": "पोर्टफोलिओ",
+    "rentalInventory": "भाडे इन्व्हेंटरी",
+    "myEquipment": "माझी उपकरणे",
+    "packages": "माझे पॅकेज",
+    "verification": "पडताळणी",
+    "settings": "सेटिंग्ज",
+    "support": "मदत",
+    "logout": "लॉगआउट",
+    "providerSection": "प्रदाता साधने",
+    "generalSection": "सामान्य"
+  },
+  "equipment": {
+    "title": "माझी उपकरणे",
+    "addEquipment": "उपकरण जोडा",
+    "brand": "ब्रँड",
+    "model": "मॉडेल",
+    "serialNumber": "सीरियल नंबर",
+    "equipmentType": "उपकरण प्रकार",
+    "selectBrand": "ब्रँड निवडण्यासाठी टॅप करा",
+    "selectModel": "मॉडेल निवडण्यासाठी टॅप करा",
+    "noEquipment": "कोणतीही उपकरणे सूचीबद्ध नाहीत",
+    "addGear": "तुमची व्यावसायिक उपकरणे दर्शवण्यासाठी तुमचे गियर जोडा"
+  },
+  "inventory": {
+    "title": "कॅमेरा भाडे इन्व्हेंटरी",
+    "total": "एकूण",
+    "available": "उपलब्ध",
+    "rented": "भाड्याने",
+    "maintenance": "देखभाल",
+    "rentOut": "भाड्याने द्या",
+    "return": "परत",
+    "condition": "स्थिती",
+    "pricing": "किंमत",
+    "qcPhotos": "QC फोटो"
+  },
+  "chatbot": {
+    "greeting": "नमस्कार! मी कॅमी आहे. आज मी तुम्हाला कशी मदत करू शकतो?",
+    "placeholder": "एक संदेश टाइप करा...",
+    "assistant": "तुमचा कमार्टेस सहाय्यक"
+  },
+  "booking": {
+    "selectService": "सेवा निवडा",
+    "enterLocation": "स्थान प्रविष्ट करा",
+    "selectDate": "तारीख निवडा",
+    "availableProviders": "उपलब्ध प्रदाते",
+    "sendRequest": "बुकिंग विनंती पाठवा",
+    "requestSent": "बुकिंग विनंती पाठवली!"
+  }
+}

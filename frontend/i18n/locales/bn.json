@@ -1,0 +1,111 @@
+{
+  "common": {
+    "signIn": "Google দিয়ে সাইন ইন করুন",
+    "signOut": "লগআউট",
+    "dashboard": "ড্যাশবোর্ড",
+    "home": "হোম",
+    "services": "সেবাসমূহ",
+    "account": "অ্যাকাউন্ট",
+    "bookings": "বুকিং",
+    "messages": "বার্তা",
+    "back": "পিছনে",
+    "continue": "চালিয়ে যান",
+    "save": "পরিবর্তন সংরক্ষণ করুন",
+    "saving": "সংরক্ষণ করা হচ্ছে...",
+    "loading": "লোড হচ্ছে...",
+    "viewProfile": "প্রোফাইল দেখুন",
+    "bookNow": "এখনই বুক করুন",
+    "help": "সাহায্য",
+    "feedback": "মতামত",
+    "language": "ভাষা",
+    "cancel": "বাতিল",
+    "delete": "মুছুন",
+    "edit": "সম্পাদনা",
+    "add": "যোগ করুন",
+    "search": "অনুসন্ধান"
+  },
+  "home": {
+    "title": "ফটোগ্রাফি ইকোসিস্টেম প্ল্যাটফর্ম",
+    "subtitle": "পেশাদারদের সাথে সংযুক্ত হন এবং আপনার ফটোগ্রাফি ব্যবসা বাড়ান",
+    "welcome": "স্বাগতম",
+    "freelancerServices": "ফ্রিল্যান্সার সেবা",
+    "businessServices": "ব্যবসায়িক সেবা",
+    "latestNews": "সর্বশেষ ফটোগ্রাফি খবর",
+    "createBooking": "বুকিং তৈরি করুন"
+  },
+  "services": {
+    "photographer": "ফটোগ্রাফার",
+    "videographer": "ভিডিওগ্রাফার",
+    "albumDesigner": "অ্যালবাম ডিজাইনার",
+    "videoEditor": "ভিডিও এডিটর",
+    "webLive": "ওয়েব লাইভ",
+    "ledWall": "LED ওয়াল",
+    "flyCam": "ফ্লাই ক্যাম",
+    "photographyFirm": "ফটোগ্রাফি ফার্ম",
+    "cameraRental": "ক্যামেরা ভাড়া",
+    "serviceCentres": "সার্ভিস সেন্টার",
+    "outdoorStudios": "আউটডোর স্টুডিও",
+    "editingStudios": "এডিটিং স্টুডিও",
+    "printingLabs": "প্রিন্টিং ল্যাব",
+    "browseServices": "সেবা ব্রাউজ করুন",
+    "availableProviders": "উপলব্ধ প্রদানকারী",
+    "noProvidersYet": "এখনো কোন প্রদানকারী নেই",
+    "yearsExperience": "বছরের অভিজ্ঞতা",
+    "from": "থেকে"
+  },
+  "login": {
+    "title": "ফটোগ্রাফি ইকোসিস্টেম প্ল্যাটফর্ম",
+    "subtitle": "ফটোগ্রাফি পেশাদার এবং ব্যবসার সাথে সংযুক্ত হন"
+  },
+  "account": {
+    "editProfile": "প্রোফাইল সম্পাদনা",
+    "myServices": "আমার সেবা",
+    "portfolio": "পোর্টফোলিও",
+    "rentalInventory": "ভাড়া ইনভেন্টরি",
+    "myEquipment": "আমার সরঞ্জাম",
+    "packages": "আমার প্যাকেজ",
+    "verification": "যাচাইকরণ",
+    "settings": "সেটিংস",
+    "support": "সাহায্য",
+    "logout": "লগআউট",
+    "providerSection": "প্রদানকারী সরঞ্জাম",
+    "generalSection": "সাধারণ"
+  },
+  "equipment": {
+    "title": "আমার সরঞ্জাম",
+    "addEquipment": "সরঞ্জাম যোগ করুন",
+    "brand": "ব্র্যান্ড",
+    "model": "মডেল",
+    "serialNumber": "সিরিয়াল নম্বর",
+    "equipmentType": "সরঞ্জামের ধরন",
+    "selectBrand": "ব্র্যান্ড নির্বাচন করতে ট্যাপ করুন",
+    "selectModel": "মডেল নির্বাচন করতে ট্যাপ করুন",
+    "noEquipment": "কোন সরঞ্জাম তালিকাভুক্ত নেই",
+    "addGear": "আপনার পেশাদার সরঞ্জাম প্রদর্শন করতে আপনার গিয়ার যোগ করুন"
+  },
+  "inventory": {
+    "title": "ক্যামেরা ভাড়া ইনভেন্টরি",
+    "total": "মোট",
+    "available": "উপলব্ধ",
+    "rented": "ভাড়ায়",
+    "maintenance": "রক্ষণাবেক্ষণ",
+    "rentOut": "ভাড়া দিন",
+    "return": "ফেরত",
+    "condition": "অবস্থা",
+    "pricing": "মূল্য",
+    "qcPhotos": "QC ফটো"
+  },
+  "chatbot": {
+    "greeting": "হ্যালো! আমি ক্যামি। আজ আমি আপনাকে কীভাবে সাহায্য করতে পারি?",
+    "placeholder": "একটি বার্তা টাইপ করুন...",
+    "assistant": "আপনার কামার্টেস সহকারী"
+  },
+  "booking": {
+    "selectService": "সেবা নির্বাচন করুন",
+    "enterLocation": "অবস্থান লিখুন",
+    "selectDate": "তারিখ নির্বাচন করুন",
+    "availableProviders": "উপলব্ধ প্রদানকারী",
+    "sendRequest": "বুকিং অনুরোধ পাঠান",
+    "requestSent": "বুকিং অনুরোধ পাঠানো হয়েছে!"
+  }
+}

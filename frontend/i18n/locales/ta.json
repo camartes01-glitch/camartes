@@ -1,0 +1,111 @@
+{
+  "common": {
+    "signIn": "Google மூலம் உள்நுழைக",
+    "signOut": "வெளியேறு",
+    "dashboard": "டாஷ்போர்ட்",
+    "home": "முகப்பு",
+    "services": "சேவைகள்",
+    "account": "கணக்கு",
+    "bookings": "முன்பதிவுகள்",
+    "messages": "செய்திகள்",
+    "back": "பின்செல்",
+    "continue": "தொடர",
+    "save": "மாற்றங்களை சேமி",
+    "saving": "சேமிக்கிறது...",
+    "loading": "ஏற்றுகிறது...",
+    "viewProfile": "சுயவிவரம் பார்க்க",
+    "bookNow": "இப்போது புக் செய்",
+    "help": "உதவி",
+    "feedback": "கருத்து",
+    "language": "மொழி",
+    "cancel": "ரத்து செய்",
+    "delete": "நீக்கு",
+    "edit": "திருத்து",
+    "add": "சேர்",
+    "search": "தேடு"
+  },
+  "home": {
+    "title": "புகைப்படக்கலை சுற்றுச்சூழல் தளம்",
+    "subtitle": "நிபுணர்களுடன் இணைந்து உங்கள் புகைப்படக்கலை வணிகத்தை வளர்க்கவும்",
+    "welcome": "வரவேற்கிறோம்",
+    "freelancerServices": "ஃப்ரீலான்சர் சேவைகள்",
+    "businessServices": "வணிக சேவைகள்",
+    "latestNews": "சமீபத்திய புகைப்படக்கலை செய்திகள்",
+    "createBooking": "முன்பதிவு செய்"
+  },
+  "services": {
+    "photographer": "புகைப்படக்காரர்",
+    "videographer": "வீடியோகிராஃபர்",
+    "albumDesigner": "ஆல்பம் வடிவமைப்பாளர்",
+    "videoEditor": "வீடியோ எடிட்டர்",
+    "webLive": "வெப் லைவ்",
+    "ledWall": "LED சுவர்",
+    "flyCam": "ஃப்ளை கேம்",
+    "photographyFirm": "புகைப்படக்கலை நிறுவனம்",
+    "cameraRental": "கேமரா வாடகை",
+    "serviceCentres": "சேவை மையங்கள்",
+    "outdoorStudios": "வெளிப்புற ஸ்டுடியோக்கள்",
+    "editingStudios": "எடிட்டிங் ஸ்டுடியோக்கள்",
+    "printingLabs": "அச்சு ஆய்வகங்கள்",
+    "browseServices": "சேவைகளை உலாவு",
+    "availableProviders": "கிடைக்கும் வழங்குனர்கள்",
+    "noProvidersYet": "இன்னும் வழங்குனர்கள் இல்லை",
+    "yearsExperience": "ஆண்டுகள் அனுபவம்",
+    "from": "இருந்து"
+  },
+  "login": {
+    "title": "புகைப்படக்கலை சுற்றுச்சூழல் தளம்",
+    "subtitle": "புகைப்படக்கலை நிபுணர்கள் மற்றும் வணிகங்களுடன் இணைக"
+  },
+  "account": {
+    "editProfile": "சுயவிவரம் திருத்து",
+    "myServices": "என் சேவைகள்",
+    "portfolio": "போர்ட்ஃபோலியோ",
+    "rentalInventory": "வாடகை சரக்கு",
+    "myEquipment": "என் உபகரணங்கள்",
+    "packages": "என் பேக்கேஜ்கள்",
+    "verification": "சரிபார்ப்பு",
+    "settings": "அமைப்புகள்",
+    "support": "உதவி",
+    "logout": "வெளியேறு",
+    "providerSection": "வழங்குனர் கருவிகள்",
+    "generalSection": "பொது"
+  },
+  "equipment": {
+    "title": "என் உபகரணங்கள்",
+    "addEquipment": "உபகரணம் சேர்",
+    "brand": "பிராண்ட்",
+    "model": "மாடல்",
+    "serialNumber": "சீரியல் எண்",
+    "equipmentType": "உபகரண வகை",
+    "selectBrand": "பிராண்ட் தேர்வு செய்ய தட்டவும்",
+    "selectModel": "மாடல் தேர்வு செய்ய தட்டவும்",
+    "noEquipment": "உபகரணங்கள் பட்டியலிடப்படவில்லை",
+    "addGear": "உங்கள் தொழில்முறை உபகரணங்களை காட்ட உங்கள் கியரை சேர்க்கவும்"
+  },
+  "inventory": {
+    "title": "கேமரா வாடகை சரக்கு",
+    "total": "மொத்தம்",
+    "available": "கிடைக்கும்",
+    "rented": "வாடகைக்கு",
+    "maintenance": "பராமரிப்பு",
+    "rentOut": "வாடகைக்கு விடு",
+    "return": "திரும்ப",
+    "condition": "நிலை",
+    "pricing": "விலை",
+    "qcPhotos": "QC புகைப்படங்கள்"
+  },
+  "chatbot": {
+    "greeting": "வணக்கம்! நான் கேமி. இன்று நான் உங்களுக்கு எப்படி உதவ முடியும்?",
+    "placeholder": "ஒரு செய்தியை தட்டச்சு செய்யவும்...",
+    "assistant": "உங்கள் கமார்டெஸ் உதவியாளர்"
+  },
+  "booking": {
+    "selectService": "சேவையை தேர்வு செய்",
+    "enterLocation": "இடத்தை உள்ளிடவும்",
+    "selectDate": "தேதியை தேர்வு செய்",
+    "availableProviders": "கிடைக்கும் வழங்குனர்கள்",
+    "sendRequest": "முன்பதிவு கோரிக்கை அனுப்பு",
+    "requestSent": "முன்பதிவு கோரிக்கை அனுப்பப்பட்டது!"
+  }
+}

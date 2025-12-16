@@ -1,0 +1,111 @@
+{
+  "common": {
+    "signIn": "Google తో సైన్ ఇన్ చేయండి",
+    "signOut": "లాగ్అవుట్",
+    "dashboard": "డాష్‌బోర్డ్",
+    "home": "హోమ్",
+    "services": "సేవలు",
+    "account": "ఖాతా",
+    "bookings": "బుకింగ్‌లు",
+    "messages": "సందేశాలు",
+    "back": "వెనుకకు",
+    "continue": "కొనసాగించు",
+    "save": "మార్పులు సేవ్ చేయండి",
+    "saving": "సేవ్ చేస్తోంది...",
+    "loading": "లోడ్ అవుతోంది...",
+    "viewProfile": "ప్రొఫైల్ చూడండి",
+    "bookNow": "ఇప్పుడే బుక్ చేయండి",
+    "help": "సహాయం",
+    "feedback": "అభిప్రాయం",
+    "language": "భాష",
+    "cancel": "రద్దు",
+    "delete": "తొలగించు",
+    "edit": "సవరించు",
+    "add": "జోడించు",
+    "search": "వెతుకు"
+  },
+  "home": {
+    "title": "ఫోటోగ్రఫీ ఎకోసిస్టమ్ ప్లాట్‌ఫారమ్",
+    "subtitle": "నిపుణులతో కనెక్ట్ అవ్వండి మరియు మీ ఫోటోగ్రఫీ వ్యాపారాన్ని పెంచుకోండి",
+    "welcome": "స్వాగతం",
+    "freelancerServices": "ఫ్రీలాన్సర్ సేవలు",
+    "businessServices": "వ్యాపార సేవలు",
+    "latestNews": "తాజా ఫోటోగ్రఫీ వార్తలు",
+    "createBooking": "బుకింగ్ చేయండి"
+  },
+  "services": {
+    "photographer": "ఫోటోగ్రాఫర్",
+    "videographer": "వీడియోగ్రాఫర్",
+    "albumDesigner": "ఆల్బమ్ డిజైనర్",
+    "videoEditor": "వీడియో ఎడిటర్",
+    "webLive": "వెబ్ లైవ్",
+    "ledWall": "LED వాల్",
+    "flyCam": "ఫ్లై క్యామ్",
+    "photographyFirm": "ఫోటోగ్రఫీ ఫర్మ్",
+    "cameraRental": "కెమెరా రెంటల్",
+    "serviceCentres": "సర్వీస్ సెంటర్లు",
+    "outdoorStudios": "అవుట్‌డోర్ స్టూడియోలు",
+    "editingStudios": "ఎడిటింగ్ స్టూడియోలు",
+    "printingLabs": "ప్రింటింగ్ ల్యాబ్స్",
+    "browseServices": "సేవలను బ్రౌజ్ చేయండి",
+    "availableProviders": "అందుబాటులో ఉన్న ప్రొవైడర్లు",
+    "noProvidersYet": "ఇంకా ప్రొవైడర్లు లేరు",
+    "yearsExperience": "సంవత్సరాల అనుభవం",
+    "from": "నుండి"
+  },
+  "login": {
+    "title": "ఫోటోగ్రఫీ ఎకోసిస్టమ్ ప్లాట్‌ఫారమ్",
+    "subtitle": "ఫోటోగ్రఫీ నిపుణులు మరియు వ్యాపారాలతో కనెక్ట్ అవ్వండి"
+  },
+  "account": {
+    "editProfile": "ప్రొఫైల్ సవరించు",
+    "myServices": "నా సేవలు",
+    "portfolio": "పోర్ట్‌ఫోలియో",
+    "rentalInventory": "రెంటల్ ఇన్వెంటరీ",
+    "myEquipment": "నా పరికరాలు",
+    "packages": "నా ప్యాకేజీలు",
+    "verification": "ధృవీకరణ",
+    "settings": "సెట్టింగ్‌లు",
+    "support": "సహాయం",
+    "logout": "లాగ్అవుట్",
+    "providerSection": "ప్రొవైడర్ టూల్స్",
+    "generalSection": "సాధారణ"
+  },
+  "equipment": {
+    "title": "నా పరికరాలు",
+    "addEquipment": "పరికరం జోడించు",
+    "brand": "బ్రాండ్",
+    "model": "మోడల్",
+    "serialNumber": "సీరియల్ నంబర్",
+    "equipmentType": "పరికర రకం",
+    "selectBrand": "బ్రాండ్ ఎంచుకోవడానికి నొక్కండి",
+    "selectModel": "మోడల్ ఎంచుకోవడానికి నొక్కండి",
+    "noEquipment": "పరికరాలు జాబితా చేయబడలేదు",
+    "addGear": "మీ వృత్తిపరమైన పరికరాలను ప్రదర్శించడానికి మీ గేర్‌ని జోడించండి"
+  },
+  "inventory": {
+    "title": "కెమెరా రెంటల్ ఇన్వెంటరీ",
+    "total": "మొత్తం",
+    "available": "అందుబాటులో",
+    "rented": "అద్దెకు",
+    "maintenance": "నిర్వహణ",
+    "rentOut": "అద్దెకు ఇవ్వు",
+    "return": "తిరిగి",
+    "condition": "స్థితి",
+    "pricing": "ధర",
+    "qcPhotos": "QC ఫోటోలు"
+  },
+  "chatbot": {
+    "greeting": "హాయ్! నేను కామీ. ఈ రోజు నేను మీకు ఎలా సహాయం చేయగలను?",
+    "placeholder": "సందేశం టైప్ చేయండి...",
+    "assistant": "మీ కామార్టెస్ అసిస్టెంట్"
+  },
+  "booking": {
+    "selectService": "సేవను ఎంచుకోండి",
+    "enterLocation": "స్థానం నమోదు చేయండి",
+    "selectDate": "తేదీ ఎంచుకోండి",
+    "availableProviders": "అందుబాటులో ఉన్న ప్రొవైడర్లు",
+    "sendRequest": "బుకింగ్ అభ్యర్థన పంపండి",
+    "requestSent": "బుకింగ్ అభ్యర్థన పంపబడింది!"
+  }
+}
