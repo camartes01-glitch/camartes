@@ -99,6 +99,13 @@ export default function AccountScreen() {
 
   const providerMenuItems: MenuItem[] = [
     {
+      id: 'dashboard',
+      title: 'Dashboard',
+      icon: 'stats-chart-outline',
+      route: '/dashboard',
+      color: colors.primary[600],
+    },
+    {
       id: 'portfolio',
       title: 'Portfolio',
       icon: 'images-outline',
