@@ -358,6 +358,9 @@ export default function AccountScreen() {
                 </View>
                 <View style={styles.menuItemContent}>
                   <Text style={styles.menuItemText}>{item.title}</Text>
+                  {item.subtitle && (
+                    <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
+                  )}
                   {item.badge !== undefined && item.badge > 0 && (
                     <View style={styles.menuBadge}>
                       <Text style={styles.menuBadgeText}>{item.badge}</Text>
