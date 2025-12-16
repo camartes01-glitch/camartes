@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: Build a mobile application that is an exact replica of the "Camartes - Photography Ecosystem Platform" web application. Features include inventory management, profile building, camera rental business, and all workflows from the original code.
+user_problem_statement: Build a mobile application that is an exact replica of the "Camartes - Photography Ecosystem Platform" web application. Features include inventory management, profile building per service type, camera rental business workflow, and all workflows from the original code.
 
 backend:
   - task: "Inventory Management API"
@@ -115,7 +115,7 @@ backend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Added full /api/inventory endpoints matching original code - CRUD, rent/return, pricing tiers (6h, 8h, 12h, 24h)"
+        comment: "Full /api/inventory with CRUD, rent/return, pricing tiers (6h, 8h, 12h, 24h)"
 
   - task: "User Services API"
     implemented: true
@@ -127,7 +127,7 @@ backend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Added /api/user-services endpoints for service selection"
+        comment: "/api/user-services for service selection (freelancer/business categories)"
 
   - task: "Service Details/Pricing API"
     implemented: true
@@ -139,7 +139,19 @@ backend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Added /api/services/details and /api/services/pricing endpoints"
+        comment: "/api/services/details and /api/services/pricing with all pricing fields per service type (16 fields total)"
+
+  - task: "Booking Requests API"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Full /api/booking-requests with freelancer camera rental restrictions (1 camera, 3 lenses max), accept/reject workflow"
 
   - task: "Equipment Management API"
     implemented: true
@@ -151,7 +163,7 @@ backend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Added CRUD endpoints for equipment with update/delete"
+        comment: "CRUD endpoints for equipment with update/delete"
 
 frontend:
   - task: "Inventory Management Screen"
@@ -164,7 +176,19 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Full inventory screen with stats, filters, add/edit forms, rent out modal, return functionality"
+        comment: "Stats cards, filters, add/edit forms, rent out modal, return functionality"
+
+  - task: "My Services - Profile Building Per Service Type"
+    implemented: true
+    working: true
+    file: "app/my-services.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Service selection (Freelancer: 7 services, Business: 6 services), service editor with years experience, specialties per service type, quality options for streaming services, pricing fields specific to each service"
 
   - task: "Portfolio & Profile Building"
     implemented: true
@@ -176,7 +200,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Portfolio grid with profile builder tab, bio/specialization/experience/achievements fields"
+        comment: "Portfolio grid with profile builder tab"
 
   - task: "Account Menu Updates"
     implemented: true
@@ -192,18 +216,19 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "1.0"
-  test_sequence: 1
+  version: "2.0"
+  test_sequence: 2
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Inventory Management functionality"
-    - "Portfolio profile building"
+    - "Service Profile Building workflow"
+    - "Camera Rental Booking Requests"
+    - "Inventory Management"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
-    message: "Implemented inventory management matching original code. Added full API for inventory with rent/return, user-services, and service details/pricing. Frontend inventory screen has stats, filters, add/edit/delete, rent out modal. Fixed portfolio.tsx syntax error."
+    message: "Phase 2 complete. Added comprehensive service profile building workflow matching original code. Implemented: (1) Service selection with 7 freelancer + 6 business services, (2) Service editor with specialties per service type, (3) Service-specific pricing fields, (4) Quality options for streaming services, (5) Booking requests API with freelancer camera rental restrictions. All APIs now match the original code's functionality."
