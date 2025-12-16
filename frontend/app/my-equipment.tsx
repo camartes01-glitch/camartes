@@ -9,7 +9,6 @@ import {
   Alert,
   RefreshControl,
   Modal,
-  FlatList,
   Dimensions,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
