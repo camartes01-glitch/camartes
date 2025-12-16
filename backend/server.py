@@ -1064,6 +1064,7 @@ class ServiceDetails(BaseModel):
 
 class ServicePricing(BaseModel):
     service_type: str
+    price_4_hours: Optional[float] = None
     price_6_hours: Optional[float] = None
     price_8_hours: Optional[float] = None
     price_12_hours: Optional[float] = None
@@ -1075,6 +1076,10 @@ class ServicePricing(BaseModel):
     price_per_event: Optional[float] = None
     price_per_album: Optional[float] = None
     price_per_video: Optional[float] = None
+    price_per_sheet: Optional[float] = None
+    price_per_album_cover: Optional[float] = None
+    price_per_poster: Optional[float] = None
+    price_per_album_box: Optional[float] = None
 
 @api_router.get("/services/details/{service_type}")
 async def get_service_details(
