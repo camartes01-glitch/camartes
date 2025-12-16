@@ -1249,6 +1249,91 @@ async def return_inventory_item(
     
     return {"success": True}
 
+# ==================== QC PHOTOS ENDPOINTS ====================
+
+class QCPhotoUpload(BaseModel):
+    inventory_id: str
+    qc_type: str  # "delivery" or "return"
+    image_base64: str
+    file_name: Optional[str] = "qc_photo.jpg"
+
+@api_router.post("/inventory/{inventory_id}/qc-photos")
+async def upload_qc_photo(
+    inventory_id: str,
+    photo_data: QCPhotoUpload,
+    current_user: User = Depends(require_auth)
+):
+    """Upload QC photo for inventory item"""
+    # Verify ownership
+    item = await db.inventory.find_one(
+        {"inventory_id": inventory_id, "owner_id": current_user.user_id},
+        {"_id": 0}
+    )
+    
+    if not item:
+        raise HTTPException(status_code=404, detail="Inventory item not found")
+    
+    # Check photo limit (max 7 per type)
+    existing = await db.qc_photos.count_documents({
+        "inventory_id": inventory_id,
+        "qc_type": photo_data.qc_type
+    })
+    
+    if existing >= 7:
+        raise HTTPException(status_code=400, detail="Maximum 7 photos allowed per QC type")
+    
+    photo_record = {
+        "photo_id": f"qc_{uuid.uuid4().hex[:12]}",
+        "inventory_id": inventory_id,
+        "owner_id": current_user.user_id,
+        "qc_type": photo_data.qc_type,
+        "image_base64": photo_data.image_base64,
+        "file_name": photo_data.file_name,
+        "created_at": datetime.now(timezone.utc)
+    }
+    
+    await db.qc_photos.insert_one(photo_record)
+    
+    return {"success": True, "photo_id": photo_record["photo_id"]}
+
+@api_router.get("/inventory/{inventory_id}/qc-photos")
+async def get_qc_photos(
+    inventory_id: str,
+    current_user: User = Depends(require_auth)
+):
+    """Get QC photos for inventory item"""
+    # Verify ownership
+    item = await db.inventory.find_one(
+        {"inventory_id": inventory_id, "owner_id": current_user.user_id},
+        {"_id": 0}
+    )
+    
+    if not item:
+        raise HTTPException(status_code=404, detail="Inventory item not found")
+    
+    photos = await db.qc_photos.find(
+        {"inventory_id": inventory_id},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(100)
+    
+    return photos
+
+@api_router.delete("/inventory/qc-photos/{photo_id}")
+async def delete_qc_photo(
+    photo_id: str,
+    current_user: User = Depends(require_auth)
+):
+    """Delete QC photo"""
+    result = await db.qc_photos.delete_one({
+        "photo_id": photo_id,
+        "owner_id": current_user.user_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Photo not found")
+    
+    return {"success": True}
+
 # ==================== USER SERVICES ENDPOINTS ====================
 
 class UserServiceSelection(BaseModel):
