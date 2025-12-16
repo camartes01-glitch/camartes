@@ -749,6 +749,99 @@ export default function InventoryManagementScreen() {
           </View>
         </Modal>
 
+        {/* Brand Picker Modal */}
+        <Modal visible={showBrandDropdown} animationType="slide" presentationStyle="pageSheet">
+          <SafeAreaView style={styles.pickerModalContainer}>
+            <View style={styles.pickerHeader}>
+              <Text style={styles.pickerTitle}>Select Brand</Text>
+              <TouchableOpacity onPress={() => setShowBrandDropdown(false)}>
+                <Ionicons name="close" size={28} color={colors.gray[600]} />
+              </TouchableOpacity>
+            </View>
+            <TextInput
+              style={styles.pickerSearchInput}
+              placeholder="Search brands..."
+              placeholderTextColor={colors.gray[400]}
+              onChangeText={(text) => {
+                const filtered = brandSuggestions.filter(b => 
+                  b.toLowerCase().includes(text.toLowerCase())
+                );
+                setBrandSuggestions(filtered.length > 0 ? filtered : brandSuggestions);
+              }}
+            />
+            <ScrollView style={styles.pickerList}>
+              {brandSuggestions.map((brand) => (
+                <TouchableOpacity
+                  key={brand}
+                  style={[
+                    styles.pickerItem,
+                    formData.brand === brand && styles.pickerItemSelected
+                  ]}
+                  onPress={() => {
+                    setFormData({ ...formData, brand, model: '' });
+                    setShowBrandDropdown(false);
+                    loadModelSuggestions(formData.equipment_type, brand);
+                  }}
+                >
+                  <Text style={[
+                    styles.pickerItemText,
+                    formData.brand === brand && styles.pickerItemTextSelected
+                  ]}>{brand}</Text>
+                  {formData.brand === brand && (
+                    <Ionicons name="checkmark" size={24} color={colors.primary[500]} />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </SafeAreaView>
+        </Modal>
+
+        {/* Model Picker Modal */}
+        <Modal visible={showModelDropdown} animationType="slide" presentationStyle="pageSheet">
+          <SafeAreaView style={styles.pickerModalContainer}>
+            <View style={styles.pickerHeader}>
+              <Text style={styles.pickerTitle}>Select Model</Text>
+              <TouchableOpacity onPress={() => setShowModelDropdown(false)}>
+                <Ionicons name="close" size={28} color={colors.gray[600]} />
+              </TouchableOpacity>
+            </View>
+            <TextInput
+              style={styles.pickerSearchInput}
+              placeholder="Search models..."
+              placeholderTextColor={colors.gray[400]}
+              onChangeText={(text) => {
+                const filtered = modelSuggestions.filter(m => 
+                  m.toLowerCase().includes(text.toLowerCase())
+                );
+                setModelSuggestions(filtered.length > 0 ? filtered : modelSuggestions);
+              }}
+            />
+            <ScrollView style={styles.pickerList}>
+              {modelSuggestions.map((model) => (
+                <TouchableOpacity
+                  key={model}
+                  style={[
+                    styles.pickerItem,
+                    formData.model === model && styles.pickerItemSelected
+                  ]}
+                  onPress={() => {
+                    setFormData({ ...formData, model });
+                    setShowModelDropdown(false);
+                  }}
+                >
+                  <Text style={[
+                    styles.pickerItemText,
+                    formData.model === model && styles.pickerItemTextSelected
+                  ]}>{model}</Text>
+                  {formData.model === model && (
+                    <Ionicons name="checkmark" size={24} color={colors.primary[500]} />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </SafeAreaView>
+        </Modal>
+
         {/* QC Photo Manager Modal */}
         <Modal visible={!!showQCModal} animationType="slide" transparent>
           <View style={styles.modalOverlay}>
