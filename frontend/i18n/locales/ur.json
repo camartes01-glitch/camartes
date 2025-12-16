@@ -1,0 +1,111 @@
+{
+  "common": {
+    "signIn": "Google کے ساتھ سائن ان کریں",
+    "signOut": "لاگ آؤٹ",
+    "dashboard": "ڈیش بورڈ",
+    "home": "ہوم",
+    "services": "خدمات",
+    "account": "اکاؤنٹ",
+    "bookings": "بکنگز",
+    "messages": "پیغامات",
+    "back": "واپس",
+    "continue": "جاری رکھیں",
+    "save": "تبدیلیاں محفوظ کریں",
+    "saving": "محفوظ ہو رہا ہے...",
+    "loading": "لوڈ ہو رہا ہے...",
+    "viewProfile": "پروفائل دیکھیں",
+    "bookNow": "ابھی بک کریں",
+    "help": "مدد",
+    "feedback": "فیڈبیک",
+    "language": "زبان",
+    "cancel": "منسوخ کریں",
+    "delete": "حذف کریں",
+    "edit": "ترمیم کریں",
+    "add": "شامل کریں",
+    "search": "تلاش کریں"
+  },
+  "home": {
+    "title": "فوٹوگرافی ایکو سسٹم پلیٹ فارم",
+    "subtitle": "پیشہ ور افراد سے جڑیں اور اپنا فوٹوگرافی کاروبار بڑھائیں",
+    "welcome": "خوش آمدید",
+    "freelancerServices": "فری لانسر خدمات",
+    "businessServices": "کاروباری خدمات",
+    "latestNews": "تازہ ترین فوٹوگرافی خبریں اور رجحانات",
+    "createBooking": "بکنگ بنائیں"
+  },
+  "services": {
+    "photographer": "فوٹوگرافر",
+    "videographer": "ویڈیوگرافر",
+    "albumDesigner": "البم ڈیزائنر",
+    "videoEditor": "ویڈیو ایڈیٹر",
+    "webLive": "ویب لائیو",
+    "ledWall": "LED وال",
+    "flyCam": "فلائی کیم",
+    "photographyFirm": "فوٹوگرافی فرم",
+    "cameraRental": "کیمرہ کرائے پر",
+    "serviceCentres": "سروس سینٹرز",
+    "outdoorStudios": "آؤٹ ڈور سٹوڈیوز",
+    "editingStudios": "ایڈیٹنگ سٹوڈیوز",
+    "printingLabs": "پرنٹنگ لیبز",
+    "browseServices": "خدمات براؤز کریں",
+    "availableProviders": "دستیاب فراہم کنندگان",
+    "noProvidersYet": "ابھی کوئی فراہم کنندہ نہیں",
+    "yearsExperience": "سال کا تجربہ",
+    "from": "سے"
+  },
+  "login": {
+    "title": "فوٹوگرافی ایکو سسٹم پلیٹ فارم",
+    "subtitle": "فوٹوگرافی پیشہ ور افراد اور کاروبار سے جڑیں"
+  },
+  "account": {
+    "editProfile": "پروفائل میں ترمیم کریں",
+    "myServices": "میری خدمات",
+    "portfolio": "پورٹ فولیو اور پروفائل",
+    "rentalInventory": "کرائے کی انوینٹری",
+    "myEquipment": "میرا سامان",
+    "packages": "میرے پیکجز",
+    "verification": "تصدیق",
+    "settings": "ترتیبات",
+    "support": "مدد اور سپورٹ",
+    "logout": "لاگ آؤٹ",
+    "providerSection": "فراہم کنندہ ٹولز",
+    "generalSection": "عمومی"
+  },
+  "equipment": {
+    "title": "میرا سامان",
+    "addEquipment": "سامان شامل کریں",
+    "brand": "برانڈ",
+    "model": "ماڈل",
+    "serialNumber": "سیریل نمبر",
+    "equipmentType": "سامان کی قسم",
+    "selectBrand": "برانڈ منتخب کرنے کے لیے ٹیپ کریں",
+    "selectModel": "ماڈل منتخب کرنے کے لیے ٹیپ کریں",
+    "noEquipment": "کوئی سامان درج نہیں",
+    "addGear": "اپنے پیشہ ورانہ سامان کو ظاہر کرنے کے لیے اپنا گیئر شامل کریں"
+  },
+  "inventory": {
+    "title": "کیمرہ کرائے کی انوینٹری",
+    "total": "کل",
+    "available": "دستیاب",
+    "rented": "کرائے پر دیا گیا",
+    "maintenance": "دیکھ بھال",
+    "rentOut": "کرائے پر دیں",
+    "return": "واپس کریں",
+    "condition": "حالت",
+    "pricing": "قیمت",
+    "qcPhotos": "QC تصاویر"
+  },
+  "chatbot": {
+    "greeting": "ہائے! میں کیمی ہوں۔ آج میں آپ کی کیسے مدد کر سکتا ہوں؟",
+    "placeholder": "پیغام لکھیں...",
+    "assistant": "آپ کا Camartes اسسٹنٹ"
+  },
+  "booking": {
+    "selectService": "سروس منتخب کریں",
+    "enterLocation": "مقام درج کریں",
+    "selectDate": "تاریخ منتخب کریں",
+    "availableProviders": "دستیاب فراہم کنندگان",
+    "sendRequest": "بکنگ کی درخواست بھیجیں",
+    "requestSent": "بکنگ کی درخواست بھیج دی گئی!"
+  }
+}

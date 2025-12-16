@@ -1,0 +1,111 @@
+{
+  "common": {
+    "signIn": "Google સાથે સાઇન ઇન કરો",
+    "signOut": "લૉગઆઉટ",
+    "dashboard": "ડેશબોર્ડ",
+    "home": "હોમ",
+    "services": "સેવાઓ",
+    "account": "એકાઉન્ટ",
+    "bookings": "બુકિંગ",
+    "messages": "સંદેશાઓ",
+    "back": "પાછળ",
+    "continue": "ચાલુ રાખો",
+    "save": "ફેરફારો સાચવો",
+    "saving": "સાચવી રહ્યું છે...",
+    "loading": "લોડ થઈ રહ્યું છે...",
+    "viewProfile": "પ્રોફાઇલ જુઓ",
+    "bookNow": "હમણાં બુક કરો",
+    "help": "મદદ",
+    "feedback": "પ્રતિસાદ",
+    "language": "ભાષા",
+    "cancel": "રદ કરો",
+    "delete": "કાઢી નાખો",
+    "edit": "સંપાદિત કરો",
+    "add": "ઉમેરો",
+    "search": "શોધો"
+  },
+  "home": {
+    "title": "ફોટોગ્રાફી ઇકોસિસ્ટમ પ્લેટફોર્મ",
+    "subtitle": "પ્રોફેશનલ્સ સાથે કનેક્ટ થાઓ અને તમારો ફોટોગ્રાફી બિઝનેસ વધારો",
+    "welcome": "સ્વાગત છે",
+    "freelancerServices": "ફ્રીલાન્સર સેવાઓ",
+    "businessServices": "બિઝનેસ સેવાઓ",
+    "latestNews": "નવીનતમ ફોટોગ્રાફી સમાચાર અને ટ્રેન્ડ્સ",
+    "createBooking": "બુકિંગ બનાવો"
+  },
+  "services": {
+    "photographer": "ફોટોગ્રાફર",
+    "videographer": "વિડિયોગ્રાફર",
+    "albumDesigner": "આલ્બમ ડિઝાઇનર",
+    "videoEditor": "વિડિયો એડિટર",
+    "webLive": "વેબ લાઇવ",
+    "ledWall": "LED વોલ",
+    "flyCam": "ફ્લાય કેમ",
+    "photographyFirm": "ફોટોગ્રાફી ફર્મ",
+    "cameraRental": "કેમેરા ભાડે",
+    "serviceCentres": "સર્વિસ સેન્ટર્સ",
+    "outdoorStudios": "આઉટડોર સ્ટુડિયો",
+    "editingStudios": "એડિટિંગ સ્ટુડિયો",
+    "printingLabs": "પ્રિન્ટિંગ લેબ્સ",
+    "browseServices": "સેવાઓ બ્રાઉઝ કરો",
+    "availableProviders": "ઉપલબ્ધ પ્રોવાઇડર્સ",
+    "noProvidersYet": "હજી કોઈ પ્રોવાઇડર્સ નથી",
+    "yearsExperience": "વર્ષોનો અનુભવ",
+    "from": "થી"
+  },
+  "login": {
+    "title": "ફોટોગ્રાફી ઇકોસિસ્ટમ પ્લેટફોર્મ",
+    "subtitle": "ફોટોગ્રાફી પ્રોફેશનલ્સ અને બિઝનેસ સાથે કનેક્ટ થાઓ"
+  },
+  "account": {
+    "editProfile": "પ્રોફાઇલ સંપાદિત કરો",
+    "myServices": "મારી સેવાઓ",
+    "portfolio": "પોર્ટફોલિયો અને પ્રોફાઇલ",
+    "rentalInventory": "ભાડાની ઇન્વેન્ટરી",
+    "myEquipment": "મારા સાધનો",
+    "packages": "મારા પેકેજ",
+    "verification": "ચકાસણી",
+    "settings": "સેટિંગ્સ",
+    "support": "મદદ અને સપોર્ટ",
+    "logout": "લૉગઆઉટ",
+    "providerSection": "પ્રોવાઇડર ટૂલ્સ",
+    "generalSection": "સામાન્ય"
+  },
+  "equipment": {
+    "title": "મારા સાધનો",
+    "addEquipment": "સાધન ઉમેરો",
+    "brand": "બ્રાન્ડ",
+    "model": "મોડેલ",
+    "serialNumber": "સીરિયલ નંબર",
+    "equipmentType": "સાધનનો પ્રકાર",
+    "selectBrand": "બ્રાન્ડ પસંદ કરવા ટેપ કરો",
+    "selectModel": "મોડેલ પસંદ કરવા ટેપ કરો",
+    "noEquipment": "કોઈ સાધન સૂચિબદ્ધ નથી",
+    "addGear": "તમારા પ્રોફેશનલ સાધનો બતાવવા માટે તમારા ગિયર ઉમેરો"
+  },
+  "inventory": {
+    "title": "કેમેરા ભાડે ઇન્વેન્ટરી",
+    "total": "કુલ",
+    "available": "ઉપલબ્ધ",
+    "rented": "ભાડે આપેલ",
+    "maintenance": "મેન્ટેનન્સ",
+    "rentOut": "ભાડે આપો",
+    "return": "પરત કરો",
+    "condition": "સ્થિતિ",
+    "pricing": "કિંમત",
+    "qcPhotos": "QC ફોટો"
+  },
+  "chatbot": {
+    "greeting": "હાય! હું કેમી છું. આજે હું તમને કેવી રીતે મદદ કરી શકું?",
+    "placeholder": "સંદેશ લખો...",
+    "assistant": "તમારા Camartes સહાયક"
+  },
+  "booking": {
+    "selectService": "સેવા પસંદ કરો",
+    "enterLocation": "સ્થાન દાખલ કરો",
+    "selectDate": "તારીખ પસંદ કરો",
+    "availableProviders": "ઉપલબ્ધ પ્રોવાઇડર્સ",
+    "sendRequest": "બુકિંગ વિનંતી મોકલો",
+    "requestSent": "બુકિંગ વિનંતી મોકલાઈ!"
+  }
+}

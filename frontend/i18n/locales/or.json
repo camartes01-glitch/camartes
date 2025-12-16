@@ -1,0 +1,111 @@
+{
+  "common": {
+    "signIn": "Google ସହିତ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ",
+    "signOut": "ଲଗଆଉଟ୍",
+    "dashboard": "ଡ୍ୟାସବୋର୍ଡ",
+    "home": "ହୋମ୍",
+    "services": "ସେବାଗୁଡ଼ିକ",
+    "account": "ଆକାଉଣ୍ଟ",
+    "bookings": "ବୁକିଂ",
+    "messages": "ସନ୍ଦେଶ",
+    "back": "ପଛକୁ",
+    "continue": "ଜାରି ରଖନ୍ତୁ",
+    "save": "ପରିବର୍ତ୍ତନ ସେଭ୍ କରନ୍ତୁ",
+    "saving": "ସେଭ୍ ହେଉଛି...",
+    "loading": "ଲୋଡ୍ ହେଉଛି...",
+    "viewProfile": "ପ୍ରୋଫାଇଲ୍ ଦେଖନ୍ତୁ",
+    "bookNow": "ବର୍ତ୍ତମାନ ବୁକ୍ କରନ୍ତୁ",
+    "help": "ସାହାଯ୍ୟ",
+    "feedback": "ମତାମତ",
+    "language": "ଭାଷା",
+    "cancel": "ବାତିଲ କରନ୍ତୁ",
+    "delete": "ଡିଲିଟ୍ କରନ୍ତୁ",
+    "edit": "ଏଡିଟ୍ କରନ୍ତୁ",
+    "add": "ଯୋଡ଼ନ୍ତୁ",
+    "search": "ଖୋଜନ୍ତୁ"
+  },
+  "home": {
+    "title": "ଫଟୋଗ୍ରାଫି ଇକୋସିଷ୍ଟମ ପ୍ଲାଟଫର୍ମ",
+    "subtitle": "ପ୍ରଫେସନାଲ୍ ମାନଙ୍କ ସହ ଯୋଡ଼ି ହୁଅନ୍ତୁ ଏବଂ ଆପଣଙ୍କ ଫଟୋଗ୍ରାଫି ବ୍ୟବସାୟ ବଢ଼ାନ୍ତୁ",
+    "welcome": "ସ୍ୱାଗତ",
+    "freelancerServices": "ଫ୍ରିଲାନ୍ସର ସେବା",
+    "businessServices": "ବ୍ୟବସାୟ ସେବା",
+    "latestNews": "ନବୀନତମ ଫଟୋଗ୍ରାଫି ଖବର ଓ ଟ୍ରେଣ୍ଡ",
+    "createBooking": "ବୁକିଂ ତିଆରି କରନ୍ତୁ"
+  },
+  "services": {
+    "photographer": "ଫଟୋଗ୍ରାଫର",
+    "videographer": "ଭିଡିଓଗ୍ରାଫର",
+    "albumDesigner": "ଆଲବମ୍ ଡିଜାଇନର",
+    "videoEditor": "ଭିଡିଓ ଏଡିଟର",
+    "webLive": "ୱେବ୍ ଲାଇଭ୍",
+    "ledWall": "LED ୱାଲ୍",
+    "flyCam": "ଫ୍ଲାଏ କ୍ୟାମ୍",
+    "photographyFirm": "ଫଟୋଗ୍ରାଫି ଫର୍ମ",
+    "cameraRental": "କ୍ୟାମେରା ଭଡ଼ା",
+    "serviceCentres": "ସର୍ଭିସ୍ ସେଣ୍ଟର",
+    "outdoorStudios": "ଆଉଟଡୋର ଷ୍ଟୁଡିଓ",
+    "editingStudios": "ଏଡିଟିଂ ଷ୍ଟୁଡିଓ",
+    "printingLabs": "ପ୍ରିଣ୍ଟିଂ ଲ୍ୟାବ୍",
+    "browseServices": "ସେବା ବ୍ରାଉଜ୍ କରନ୍ତୁ",
+    "availableProviders": "ଉପಲବ୍ଧ ପ୍ରଦାନକାରୀ",
+    "noProvidersYet": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ପ୍ରଦାନକାରୀ ନାହାଁନ୍ତି",
+    "yearsExperience": "ବର୍ଷ ଅନୁଭବ",
+    "from": "ରୁ"
+  },
+  "login": {
+    "title": "ଫଟୋଗ୍ରାଫି ଇକୋସିଷ୍ଟମ ପ୍ଲାଟଫର୍ମ",
+    "subtitle": "ଫଟୋଗ୍ରାଫି ପ୍ରଫେସନାଲ୍ ଏବଂ ବ୍ୟବସାୟ ସହ ଯୋଡ଼ି ହୁଅନ୍ତୁ"
+  },
+  "account": {
+    "editProfile": "ପ୍ରୋଫାଇଲ୍ ଏଡିଟ୍ କରନ୍ତୁ",
+    "myServices": "ମୋର ସେବା",
+    "portfolio": "ପୋର୍ଟଫୋଲିଓ ଓ ପ୍ରୋଫାଇଲ୍",
+    "rentalInventory": "ଭଡ଼ା ଇନ୍ଭେଣ୍ଟରୀ",
+    "myEquipment": "ମୋର ସାମଗ୍ରୀ",
+    "packages": "ମୋର ପ୍ୟାକେଜ୍",
+    "verification": "ଯାଞ୍ଚ",
+    "settings": "ସେଟିଂସ୍",
+    "support": "ସାହାଯ୍ୟ ଓ ସମର୍ଥନ",
+    "logout": "ଲଗଆଉଟ୍",
+    "providerSection": "ପ୍ରଦାନକାରୀ ଟୁଲ୍ସ",
+    "generalSection": "ସାଧାରଣ"
+  },
+  "equipment": {
+    "title": "ମୋର ସାମଗ୍ରୀ",
+    "addEquipment": "ସାମଗ୍ରୀ ଯୋଡ଼ନ୍ତୁ",
+    "brand": "ବ୍ରାଣ୍ଡ",
+    "model": "ମଡେଲ୍",
+    "serialNumber": "ସିରିଆଲ୍ ନମ୍ବର",
+    "equipmentType": "ସାମଗ୍ରୀ ପ୍ରକାର",
+    "selectBrand": "ବ୍ରାଣ୍ଡ ବାଛିବାକୁ ଟ୍ୟାପ୍ କରନ୍ତୁ",
+    "selectModel": "ମଡେଲ୍ ବାଛିବାକୁ ଟ୍ୟାପ୍ କରନ୍ତୁ",
+    "noEquipment": "କୌଣସି ସାମଗ୍ରୀ ତାଲିକାଭୁକ୍ତ ନାହିଁ",
+    "addGear": "ଆପଣଙ୍କ ପ୍ରଫେସନାଲ୍ ସାମଗ୍ରୀ ଦେଖାଇବାକୁ ଆପଣଙ୍କ ଗିଅର୍ ଯୋଡ଼ନ୍ତୁ"
+  },
+  "inventory": {
+    "title": "କ୍ୟାମେରା ଭଡ଼ା ଇନ୍ଭେଣ୍ଟରୀ",
+    "total": "ମୋଟ",
+    "available": "ଉପಲବ୍ଧ",
+    "rented": "ଭଡ଼ା ଦିଆଯାଇଛି",
+    "maintenance": "ରକ୍ଷଣାବେକ୍ଷଣ",
+    "rentOut": "ଭଡ଼ା ଦିଅନ୍ତୁ",
+    "return": "ଫେରାନ୍ତୁ",
+    "condition": "ଅବସ୍ଥା",
+    "pricing": "ମୂଲ୍ୟ",
+    "qcPhotos": "QC ଫଟୋ"
+  },
+  "chatbot": {
+    "greeting": "ହାଏ! ମୁଁ କ୍ୟାମି। ଆଜି ମୁଁ ଆପଣଙ୍କୁ କିପରି ସାହାଯ୍ୟ କରିପାରିବି?",
+    "placeholder": "ସନ୍ଦେଶ ଲେଖନ୍ତୁ...",
+    "assistant": "ଆପଣଙ୍କ Camartes ସହାୟକ"
+  },
+  "booking": {
+    "selectService": "ସେବା ବାଛନ୍ତୁ",
+    "enterLocation": "ଅବସ୍ଥାନ ଦିଅନ୍ତୁ",
+    "selectDate": "ତାରିଖ ବାଛନ୍ତୁ",
+    "availableProviders": "ଉପଲବ୍ଧ ପ୍ରଦାନକାରୀ",
+    "sendRequest": "ବୁକିଂ ଅନୁରୋଧ ପଠାନ୍ତୁ",
+    "requestSent": "ବୁକିଂ ଅନୁରୋଧ ପଠାଗଲା!"
+  }
+}
