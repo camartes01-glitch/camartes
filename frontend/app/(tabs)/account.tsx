@@ -309,7 +309,7 @@ export default function AccountScreen() {
               styles.sectionTabText,
               activeSection === 'provider' && styles.sectionTabTextActive
             ]}>
-              Provider Tools
+              {t('account.providerSection')}
             </Text>
           </TouchableOpacity>
           
@@ -326,7 +326,7 @@ export default function AccountScreen() {
               styles.sectionTabText,
               activeSection === 'account' && styles.sectionTabTextActive
             ]}>
-              Account Settings
+              {t('account.settings')}
             </Text>
           </TouchableOpacity>
         </View>
