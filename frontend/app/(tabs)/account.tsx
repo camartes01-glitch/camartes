@@ -107,7 +107,7 @@ export default function AccountScreen() {
     },
     {
       id: 'portfolio',
-      title: 'Portfolio',
+      title: 'Portfolio & Profile',
       icon: 'images-outline',
       route: '/portfolio',
       color: colors.secondary[500],
@@ -121,8 +121,15 @@ export default function AccountScreen() {
       color: colors.info,
     },
     {
+      id: 'inventory',
+      title: 'Inventory Management',
+      icon: 'cube-outline',
+      route: '/inventory-management',
+      color: colors.primary[500],
+    },
+    {
       id: 'equipment',
-      title: 'My Equipment',
+      title: 'Equipment Listing',
       icon: 'camera-outline',
       route: '/my-equipment',
       color: colors.orange[500],
