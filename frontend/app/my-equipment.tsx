@@ -410,17 +410,13 @@ export default function MyEquipmentScreen() {
                   </View>
                   {showModelDropdown && modelSuggestions.length > 0 && (
                     <View style={styles.dropdown}>
-                      <FlatList
-                        data={modelSuggestions.slice(0, 8)}
-                        keyExtractor={(item) => item}
-                        renderItem={({ item }) => (
-                          <TouchableOpacity style={styles.dropdownItem} onPress={() => selectModel(item)}>
+                      <ScrollView nestedScrollEnabled keyboardShouldPersistTaps="handled" style={{ maxHeight: 200 }}>
+                        {modelSuggestions.slice(0, 8).map((item) => (
+                          <TouchableOpacity key={item} style={styles.dropdownItem} onPress={() => selectModel(item)}>
                             <Text style={styles.dropdownText}>{item}</Text>
                           </TouchableOpacity>
-                        )}
-                        keyboardShouldPersistTaps="handled"
-                        nestedScrollEnabled
-                      />
+                        ))}
+                      </ScrollView>
                     </View>
                   )}
                 </View>
