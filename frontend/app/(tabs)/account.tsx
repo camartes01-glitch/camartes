@@ -159,7 +159,7 @@ export default function AccountScreen() {
   const accountMenuItems: MenuItem[] = [
     {
       id: 'profile',
-      title: 'Edit Profile',
+      title: t('account.editProfile'),
       icon: 'person-outline',
       route: '/edit-profile',
       color: colors.primary[500],
@@ -173,21 +173,21 @@ export default function AccountScreen() {
     },
     {
       id: 'support',
-      title: 'Support',
+      title: t('account.support'),
       icon: 'help-circle-outline',
       route: '/support',
       color: colors.info,
     },
     {
       id: 'feedback',
-      title: 'Feedback',
+      title: t('common.feedback'),
       icon: 'chatbox-ellipses-outline',
       route: '/feedback',
       color: colors.warning,
     },
     {
       id: 'logout',
-      title: 'Logout',
+      title: t('account.logout'),
       icon: 'log-out-outline',
       action: handleLogout,
       color: colors.error,
