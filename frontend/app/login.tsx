@@ -29,7 +29,7 @@ export default function LoginScreen() {
       <View style={styles.content}>
         {/* Logo */}
         <View style={styles.logoContainer}>
-          <Camera size={60} color={colors.primary[500]} />
+          <Ionicons name="camera" size={60} color={colors.primary[500]} />
           <Text style={styles.logoText}>Camartes</Text>
           <Text style={styles.tagline}>Photography Ecosystem Platform</Text>
         </View>
