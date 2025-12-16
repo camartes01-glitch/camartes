@@ -726,6 +726,68 @@ export default function InventoryManagementScreen() {
             </View>
           </View>
         </Modal>
+
+        {/* QC Photo Manager Modal */}
+        <Modal visible={!!showQCModal} animationType="slide" transparent>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <View style={styles.modalHeader}>
+                <View>
+                  <Text style={styles.modalTitle}>QC Photos - {showQCModal?.qcType === 'delivery' ? 'Delivery' : 'Return'}</Text>
+                  <Text style={styles.modalSubtitle}>{showQCModal?.item.brand} {showQCModal?.item.model}</Text>
+                </View>
+                <TouchableOpacity onPress={() => setShowQCModal(null)}>
+                  <Ionicons name="close" size={28} color={colors.gray[600]} />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView style={styles.formScroll}>
+                {/* Info */}
+                <View style={styles.infoBox}>
+                  <Ionicons name="information-circle" size={20} color={colors.info} />
+                  <Text style={styles.infoText}>Upload up to 7 photos to document equipment condition. Include clear shots of all sides and any damage.</Text>
+                </View>
+
+                {/* Upload Button */}
+                <TouchableOpacity style={styles.uploadButton} onPress={handleUploadQCPhoto} disabled={uploadingQC}>
+                  <LinearGradient colors={[colors.secondary[100], colors.secondary[200]]} style={styles.uploadGradient}>
+                    <Ionicons name={uploadingQC ? 'time' : 'camera'} size={32} color={colors.secondary[700]} />
+                    <Text style={styles.uploadText}>{uploadingQC ? 'Uploading...' : 'Add Photo'}</Text>
+                    <Text style={styles.uploadSubtext}>{qcPhotos.filter(p => p.qc_type === showQCModal?.qcType).length}/7 photos</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/* Photo Grid */}
+                {qcPhotos.filter(p => p.qc_type === showQCModal?.qcType).length > 0 ? (
+                  <View style={styles.photoGrid}>
+                    {qcPhotos.filter(p => p.qc_type === showQCModal?.qcType).map((photo) => (
+                      <View key={photo.photo_id} style={styles.photoItem}>
+                        <Image source={{ uri: `data:image/jpeg;base64,${photo.image_base64}` }} style={styles.photoImage} />
+                        <TouchableOpacity style={styles.photoDeleteButton} onPress={() => handleDeleteQCPhoto(photo.photo_id)}>
+                          <Ionicons name="close" size={16} color={colors.white} />
+                        </TouchableOpacity>
+                        <View style={styles.photoDate}>
+                          <Text style={styles.photoDateText}>{new Date(photo.created_at).toLocaleDateString()}</Text>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                ) : (
+                  <View style={styles.noPhotos}>
+                    <Ionicons name="images-outline" size={48} color={colors.gray[300]} />
+                    <Text style={styles.noPhotosText}>No photos uploaded yet</Text>
+                  </View>
+                )}
+
+                <TouchableOpacity style={styles.submitButton} onPress={() => setShowQCModal(null)}>
+                  <LinearGradient colors={[colors.primary[400], colors.primary[600]]} style={styles.submitGradient}>
+                    <Text style={styles.submitText}>Done</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
       </LinearGradient>
     </SafeAreaView>
   );
