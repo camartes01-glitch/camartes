@@ -1082,6 +1082,76 @@ async def get_equipment_models(equipment_type: str, brand: str):
         return {"models": EQUIPMENT_DATA[equipment_type][brand]}
     return {"models": []}
 
+# ==================== SERVICE-SPECIFIC EQUIPMENT (for photographers/videographers) ====================
+
+class ServiceEquipment(BaseModel):
+    service_type: str
+    equipment_type: str
+    brand: str
+    model: str
+    serial_number: str
+
+@api_router.post("/equipment/service")
+async def add_service_equipment(
+    equipment: ServiceEquipment,
+    current_user: User = Depends(require_auth)
+):
+    """Add equipment for a specific service (photographer, videographer, etc.) - no rental pricing"""
+    if not equipment.serial_number or equipment.serial_number.strip() == "":
+        raise HTTPException(status_code=400, detail="Serial number is required")
+    
+    profile = await db.user_profiles.find_one(
+        {"user_id": current_user.user_id},
+        {"_id": 0}
+    )
+    
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    
+    equipment_data = {
+        "equipment_id": f"seq_{uuid.uuid4().hex[:12]}",
+        "user_id": current_user.user_id,
+        "service_type": equipment.service_type,
+        "equipment_type": equipment.equipment_type,
+        "brand": equipment.brand,
+        "model": equipment.model,
+        "serial_number": equipment.serial_number,
+        "created_at": datetime.now(timezone.utc)
+    }
+    
+    await db.service_equipment.insert_one(equipment_data)
+    
+    return {"success": True, "equipment_id": equipment_data["equipment_id"]}
+
+@api_router.get("/equipment/service/{service_type}")
+async def get_service_equipment(
+    service_type: str,
+    current_user: User = Depends(require_auth)
+):
+    """Get equipment for a specific service type"""
+    equipment = await db.service_equipment.find(
+        {"user_id": current_user.user_id, "service_type": service_type},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(100)
+    
+    return equipment
+
+@api_router.delete("/equipment/service/{equipment_id}")
+async def delete_service_equipment(
+    equipment_id: str,
+    current_user: User = Depends(require_auth)
+):
+    """Delete service equipment"""
+    result = await db.service_equipment.delete_one({
+        "equipment_id": equipment_id,
+        "user_id": current_user.user_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Equipment not found")
+    
+    return {"success": True}
+
 @api_router.get("/equipment/my-equipment")
 async def get_my_equipment(current_user: User = Depends(require_auth)):
     """Get user's equipment"""
