@@ -242,10 +242,10 @@ export default function DashboardScreen() {
                 onPress={() => router.push('/my-packages')}
               >
                 <LinearGradient
-                  colors={[colors.pink[100], colors.pink[200]]}
+                  colors={[colors.secondary[100], colors.secondary[200]]}
                   style={styles.actionGradient}
                 >
-                  <Ionicons name="gift" size={32} color={colors.pink[600]} />
+                  <Ionicons name="gift" size={32} color={colors.secondary[600]} />
                   <Text style={styles.actionText}>Create Package</Text>
                 </LinearGradient>
               </TouchableOpacity>
@@ -255,7 +255,7 @@ export default function DashboardScreen() {
                 onPress={() => router.push('/my-services')}
               >
                 <LinearGradient
-                  colors={[colors.info + '20', colors.info + '40']}
+                  colors={['#DBEAFE', '#BFDBFE']}
                   style={styles.actionGradient}
                 >
                   <Ionicons name="briefcase" size={32} color={colors.info} />
