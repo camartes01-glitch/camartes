@@ -22,7 +22,15 @@
     "delete": "Delete",
     "edit": "Edit",
     "add": "Add",
-    "search": "Search"
+    "search": "Search",
+    "seeAll": "See All",
+    "explore": "Explore",
+    "allServices": "All Services",
+    "totalServices": "Total Services",
+    "notifications": "Notifications",
+    "favorites": "Favorites",
+    "support": "Support",
+    "equipment": "Equipment"
   },
   "home": {
     "title": "Photography Ecosystem Platform",
@@ -30,8 +38,11 @@
     "welcome": "Welcome",
     "freelancerServices": "Freelancer Services",
     "businessServices": "Business Services",
-    "latestNews": "Latest Photography News & Trends",
-    "createBooking": "Create Booking"
+    "latestNews": "Latest News",
+    "createBooking": "Create Booking",
+    "findCreativePartner": "Find Your Creative Partner",
+    "connectWithProfessionals": "Connect with professional photographers, videographers, and creative services",
+    "browseServices": "Browse Services"
   },
   "services": {
     "photographer": "Photographer",
@@ -51,11 +62,32 @@
     "availableProviders": "Available Providers",
     "noProvidersYet": "No Providers Yet",
     "yearsExperience": "years experience",
-    "from": "From"
+    "from": "From",
+    "exploreServices": "Explore creative services",
+    "freelancers": "Freelancers",
+    "businesses": "Businesses",
+    "professionalPhotography": "Professional photography services",
+    "videoRecording": "Video recording & production",
+    "beautifulAlbums": "Beautiful album designs",
+    "professionalEditing": "Professional video editing",
+    "liveStreaming": "Live streaming services",
+    "ledWallSetup": "LED wall setup & management",
+    "completeSolutions": "Complete photography solutions",
+    "rentCameras": "Rent professional cameras",
+    "equipmentRepair": "Equipment repair & service",
+    "outdoorLocations": "Outdoor shooting locations",
+    "editingSuites": "Professional editing suites",
+    "photoprinting": "High-quality photo printing"
   },
   "login": {
     "title": "Photography Ecosystem Platform",
-    "subtitle": "Connect with photography professionals and businesses"
+    "subtitle": "Connect with photography professionals and businesses",
+    "continueWithGoogle": "Continue with Google",
+    "termsAgreement": "By continuing, you agree to our Terms of Service and Privacy Policy",
+    "bookServices": "Book photography services",
+    "rentEquipment": "Rent camera equipment",
+    "discoverProfessionals": "Discover talented professionals",
+    "manageBusiness": "Manage your creative business"
   },
   "account": {
     "editProfile": "Edit Profile",
@@ -106,6 +138,19 @@
     "selectDate": "Select Date",
     "availableProviders": "Available Providers",
     "sendRequest": "Send Booking Request",
-    "requestSent": "Booking request sent!"
+    "requestSent": "Booking request sent!",
+    "myBookings": "My Bookings",
+    "requests": "Requests",
+    "noBookings": "No bookings yet",
+    "startBooking": "Start booking services to see them here",
+    "noRequests": "No requests",
+    "requestsWillAppear": "Booking requests will appear here"
+  },
+  "tabs": {
+    "home": "Home",
+    "services": "Services",
+    "bookings": "Bookings",
+    "messages": "Messages",
+    "account": "Account"
   }
 }
