@@ -23,6 +23,69 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
 
+# ==================== EQUIPMENT DATA (AUTOCOMPLETE) ====================
+# Equipment brand and model data for autocomplete functionality
+
+EQUIPMENT_DATA = {
+    "Camera": {
+        "Canon": ["EOS R5", "EOS R6", "EOS R3", "EOS R7", "EOS R8", "EOS R10", "EOS R50", "EOS 5D Mark IV", "EOS 6D Mark II", "EOS 90D", "EOS 80D", "EOS 1DX Mark III", "EOS C70", "EOS C300 Mark III"],
+        "Sony": ["A7 IV", "A7R V", "A7S III", "A9 III", "FX3", "FX6", "FX30", "ZV-E1", "A7C II", "A1", "A6700", "A6400", "A6100"],
+        "Nikon": ["Z8", "Z9", "Z6 III", "Z5", "Z30", "Zfc", "D850", "D780", "D7500", "D500"],
+        "Panasonic": ["GH6", "GH5 II", "S5 II", "S5 IIX", "S1H", "S1", "G9 II", "BGH1"],
+        "Fujifilm": ["X-T5", "X-H2", "X-H2S", "X-S20", "X-T30 II", "GFX100 II", "GFX 50S II"],
+        "Blackmagic": ["Pocket Cinema Camera 6K Pro", "Pocket Cinema Camera 4K", "URSA Mini Pro 12K", "URSA Broadcast G2"],
+        "RED": ["V-Raptor", "Komodo", "Komodo-X", "DSMC2 Monstro 8K"],
+        "ARRI": ["ALEXA 35", "ALEXA Mini LF", "AMIRA"],
+    },
+    "Lens": {
+        "Canon": ["RF 24-70mm f/2.8L IS USM", "RF 70-200mm f/2.8L IS USM", "RF 15-35mm f/2.8L IS USM", "RF 50mm f/1.2L USM", "RF 85mm f/1.2L USM", "RF 100mm f/2.8L Macro IS USM", "RF 100-500mm f/4.5-7.1L IS USM", "EF 24-70mm f/2.8L II USM", "EF 70-200mm f/2.8L IS III USM"],
+        "Sony": ["FE 24-70mm f/2.8 GM II", "FE 70-200mm f/2.8 GM OSS II", "FE 16-35mm f/2.8 GM", "FE 50mm f/1.2 GM", "FE 85mm f/1.4 GM", "FE 135mm f/1.8 GM", "FE 24-105mm f/4 G OSS", "FE 200-600mm f/5.6-6.3 G OSS"],
+        "Nikon": ["NIKKOR Z 24-70mm f/2.8 S", "NIKKOR Z 70-200mm f/2.8 VR S", "NIKKOR Z 14-24mm f/2.8 S", "NIKKOR Z 50mm f/1.2 S", "NIKKOR Z 85mm f/1.2 S", "NIKKOR Z 100-400mm f/4.5-5.6 VR S"],
+        "Sigma": ["24-70mm f/2.8 DG DN Art", "70-200mm f/2.8 DG DN OS Sports", "14-24mm f/2.8 DG DN Art", "35mm f/1.4 DG DN Art", "85mm f/1.4 DG DN Art", "105mm f/2.8 DG DN Macro Art"],
+        "Tamron": ["28-75mm f/2.8 Di III VXD G2", "70-180mm f/2.8 Di III VXD", "17-28mm f/2.8 Di III RXD", "35-150mm f/2-2.8 Di III VXD"],
+        "Zeiss": ["Otus 55mm f/1.4", "Otus 85mm f/1.4", "Milvus 35mm f/1.4", "Batis 25mm f/2"],
+    },
+    "Lighting": {
+        "Godox": ["AD600 Pro", "AD400 Pro", "AD300 Pro", "AD200 Pro", "V1", "AD100 Pro", "SL150 II", "SL200 II", "ML60", "TL60"],
+        "Profoto": ["B10 Plus", "B1X", "D2", "A10", "B10", "A1X"],
+        "Aputure": ["600d Pro", "300d II", "120d II", "MC Pro", "Amaran 200d", "LS 600c Pro", "Nova P300c"],
+        "Nanlite": ["Forza 500 II", "Forza 300 II", "Forza 60C", "PavoTube II 30X", "PavoTube II 15X", "Pavoslim"],
+        "Broncolor": ["Siros 800 S", "Move 1200 L", "Scoro 3200 S"],
+    },
+    "Gimbal": {
+        "DJI": ["RS 4 Pro", "RS 4", "RS 3 Pro", "RS 3", "RS 3 Mini", "Ronin 4D", "Ronin 2"],
+        "Zhiyun": ["Crane 4", "Crane 3S", "Weebill 3", "Weebill S", "Crane M3"],
+        "Moza": ["Air 2S", "AirCross 3", "Mini-P Max"],
+        "Tilta": ["Gravity G2X", "Float", "Nucleus-M"],
+    },
+    "Tripod": {
+        "Manfrotto": ["MT055CXPRO4", "MT190XPRO4", "Befree GT XPRO", "504X Fluid Head", "MVH502AH"],
+        "Gitzo": ["Systematic Series 3", "Systematic Series 5", "Traveler GT1545T", "Mountaineer GT3543XLS"],
+        "Sachtler": ["FSB 8", "FSB 6", "Ace XL", "flowtech 75"],
+        "Benro": ["Mach3 TMA38CL", "S8 Pro", "A373T", "BV8H"],
+        "Peak Design": ["Travel Tripod Carbon", "Travel Tripod Aluminum"],
+    },
+    "Drone": {
+        "DJI": ["Mavic 3 Pro", "Mavic 3 Classic", "Air 3", "Mini 4 Pro", "Inspire 3", "Avata 2", "FPV", "Matrice 350 RTK"],
+        "Autel": ["EVO II Pro V3", "EVO Lite+", "EVO Nano+"],
+        "Skydio": ["Skydio 2+", "Skydio X10"],
+    },
+    "Audio": {
+        "Rode": ["VideoMic Pro+", "Wireless GO II", "NTG5", "VideoMic NTG", "NT-USB+", "Caster Pro", "AI-Micro"],
+        "Sennheiser": ["MKH 416", "MKE 600", "AVX-ME2", "EW 112P G4", "MD 46", "MKH 8060"],
+        "Zoom": ["H6", "H8", "F8n Pro", "F6", "H5", "F3"],
+        "DJI": ["DJI Mic", "DJI Mic 2"],
+        "Deity": ["V-Mic D3 Pro", "S-Mic 2S", "BP-TRX", "Theos"],
+    },
+    "Accessories": {
+        "Peak Design": ["Slide", "Clutch", "Capture", "Everyday Backpack", "Travel Backpack"],
+        "SmallRig": ["Camera Cage", "Follow Focus", "Matte Box", "Monitor Mount", "Magic Arm"],
+        "Tilta": ["Nucleus-N", "Advanced Ring Grip", "Side Handle", "Camera Cage"],
+        "PolarPro": ["Variable ND Filter", "Mist Filter", "CPL Filter"],
+        "NiSi": ["100mm Filter System", "V6 Filter Holder", "ND Filter Kit"],
+    },
+}
+
 # Create the main app
 app = FastAPI()
 
