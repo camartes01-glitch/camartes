@@ -608,7 +608,7 @@ export default function InventoryManagementScreen() {
                 </TouchableOpacity>
               </View>
 
-              <ScrollView style={styles.formScroll}>
+              <ScrollView style={styles.formScroll} keyboardShouldPersistTaps="handled">
                 {/* Equipment Type */}
                 <Text style={styles.formLabel}>Equipment Type</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -617,7 +617,10 @@ export default function InventoryManagementScreen() {
                       <TouchableOpacity
                         key={type}
                         style={[styles.chip, formData.equipment_type === type && styles.chipActive]}
-                        onPress={() => setFormData({ ...formData, equipment_type: type })}
+                        onPress={() => {
+                          setFormData({ ...formData, equipment_type: type, brand: '', model: '' });
+                          loadBrandSuggestions(type);
+                        }}
                       >
                         <Text style={[styles.chipText, formData.equipment_type === type && styles.chipTextActive]}>{type}</Text>
                       </TouchableOpacity>
@@ -625,12 +628,87 @@ export default function InventoryManagementScreen() {
                   </View>
                 </ScrollView>
 
-                {/* Brand & Model */}
+                {/* Brand with Autocomplete */}
                 <Text style={styles.formLabel}>Brand *</Text>
-                <TextInput style={styles.input} value={formData.brand} onChangeText={(v) => setFormData({ ...formData, brand: v })} placeholder="e.g., Canon, Sony, Nikon" placeholderTextColor={colors.gray[400]} />
+                <View style={styles.autocompleteContainer}>
+                  <View style={styles.inputRow}>
+                    <TextInput
+                      style={styles.input}
+                      value={formData.brand}
+                      onChangeText={(v) => {
+                        setFormData({ ...formData, brand: v, model: '' });
+                        const filtered = brandSuggestions.filter(b => b.toLowerCase().includes(v.toLowerCase()));
+                        setShowBrandDropdown(filtered.length > 0 && v.length > 0);
+                      }}
+                      onFocus={() => setShowBrandDropdown(brandSuggestions.length > 0)}
+                      placeholder="Type or select brand..."
+                      placeholderTextColor={colors.gray[400]}
+                    />
+                    {formData.brand !== '' && (
+                      <TouchableOpacity style={styles.clearBtn} onPress={() => setFormData({ ...formData, brand: '', model: '' })}>
+                        <Ionicons name="close-circle" size={20} color={colors.gray[400]} />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                  {showBrandDropdown && (
+                    <View style={styles.dropdownList}>
+                      {brandSuggestions.filter(b => b.toLowerCase().includes(formData.brand.toLowerCase())).slice(0, 6).map((brand) => (
+                        <TouchableOpacity
+                          key={brand}
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setFormData({ ...formData, brand, model: '' });
+                            setShowBrandDropdown(false);
+                            loadModelSuggestions(formData.equipment_type, brand);
+                          }}
+                        >
+                          <Text style={styles.dropdownText}>{brand}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  )}
+                </View>
 
+                {/* Model with Autocomplete */}
                 <Text style={styles.formLabel}>Model *</Text>
-                <TextInput style={styles.input} value={formData.model} onChangeText={(v) => setFormData({ ...formData, model: v })} placeholder="e.g., EOS R5, A7 III" placeholderTextColor={colors.gray[400]} />
+                <View style={styles.autocompleteContainer}>
+                  <View style={styles.inputRow}>
+                    <TextInput
+                      style={[styles.input, !formData.brand && styles.inputDisabled]}
+                      value={formData.model}
+                      onChangeText={(v) => {
+                        setFormData({ ...formData, model: v });
+                        const filtered = modelSuggestions.filter(m => m.toLowerCase().includes(v.toLowerCase()));
+                        setShowModelDropdown(filtered.length > 0 && v.length > 0);
+                      }}
+                      onFocus={() => setShowModelDropdown(modelSuggestions.length > 0)}
+                      placeholder={formData.brand ? "Type or select model..." : "Select brand first"}
+                      placeholderTextColor={colors.gray[400]}
+                      editable={!!formData.brand}
+                    />
+                    {formData.model !== '' && (
+                      <TouchableOpacity style={styles.clearBtn} onPress={() => setFormData({ ...formData, model: '' })}>
+                        <Ionicons name="close-circle" size={20} color={colors.gray[400]} />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                  {showModelDropdown && (
+                    <View style={styles.dropdownList}>
+                      {modelSuggestions.filter(m => m.toLowerCase().includes(formData.model.toLowerCase())).slice(0, 6).map((model) => (
+                        <TouchableOpacity
+                          key={model}
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setFormData({ ...formData, model });
+                            setShowModelDropdown(false);
+                          }}
+                        >
+                          <Text style={styles.dropdownText}>{model}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  )}
+                </View>
 
                 <Text style={styles.formLabel}>Serial Number *</Text>
                 <TextInput style={styles.input} value={formData.serial_number} onChangeText={(v) => setFormData({ ...formData, serial_number: v })} placeholder="Enter serial number" placeholderTextColor={colors.gray[400]} />
