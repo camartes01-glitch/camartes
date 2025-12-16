@@ -124,9 +124,9 @@ export default function MessagesScreen() {
         ) : (
           <View style={styles.emptyState}>
             <Ionicons name="chatbubbles-outline" size={64} color={colors.gray[300]} />
-            <Text style={styles.emptyText}>No messages yet</Text>
+            <Text style={styles.emptyText}>{t('messages.noMessages')}</Text>
             <Text style={styles.emptySubtext}>
-              Start a conversation with service providers
+              {t('messages.startConversation')}
             </Text>
           </View>
         )}
