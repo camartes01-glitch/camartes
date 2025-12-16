@@ -579,6 +579,236 @@ async def get_booking_requests(current_user: User = Depends(require_auth)):
     
     return bookings
 
+# ==================== BOOKING REQUESTS ENDPOINTS (Camera Rental Business) ====================
+
+class BookingRequest(BaseModel):
+    provider_profile_id: str
+    service_type: str
+    event_date: Optional[str] = None
+    event_time: Optional[str] = None
+    duration_hours: Optional[int] = None
+    message: Optional[str] = None
+    inventory_items: Optional[List[str]] = None  # For camera rental
+    client_name: Optional[str] = None
+    client_email: Optional[str] = None
+    client_phone: Optional[str] = None
+
+BUSINESS_SERVICES = ["photography_firm", "camera_rental", "service_centres", "outdoor_studios", "editing_studios", "printing_labs"]
+
+@api_router.post("/booking-requests")
+async def create_booking_request(
+    request: BookingRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Create a booking request"""
+    is_business_service = request.service_type in BUSINESS_SERVICES
+    
+    # Business services require authentication
+    if is_business_service and not current_user:
+        raise HTTPException(status_code=401, detail="Authentication required for business services")
+    
+    # Get client profile
+    client_profile = None
+    if current_user:
+        client_profile = await db.user_profiles.find_one(
+            {"user_id": current_user.user_id},
+            {"_id": 0}
+        )
+    
+    # Camera rental specific validations
+    if request.service_type == "camera_rental" and client_profile:
+        is_freelancer = client_profile.get("is_freelancer", False)
+        
+        if is_freelancer and request.inventory_items:
+            # Get equipment details for validation
+            items = []
+            for item_id in request.inventory_items:
+                item = await db.inventory.find_one({"inventory_id": item_id}, {"_id": 0})
+                if item:
+                    items.append(item)
+            
+            # Count cameras and lenses
+            cameras = [i for i in items if i.get("equipment_type") == "Camera"]
+            lenses = [i for i in items if i.get("equipment_type") == "Lens"]
+            
+            # Check freelancer restrictions
+            if len(cameras) > 1:
+                raise HTTPException(status_code=400, detail="Freelancers can only book 1 camera per rental")
+            if len(lenses) > 3:
+                raise HTTPException(status_code=400, detail="Freelancers can only book up to 3 lenses per rental")
+    
+    # Create booking request
+    request_data = {
+        "request_id": f"req_{uuid.uuid4().hex[:12]}",
+        "provider_profile_id": request.provider_profile_id,
+        "client_profile_id": client_profile.get("user_id") if client_profile else None,
+        "client_name": request.client_name or (client_profile.get("full_name") if client_profile else "Guest"),
+        "client_email": request.client_email or (current_user.email if current_user else None),
+        "client_phone": request.client_phone or (client_profile.get("contact_number") if client_profile else None),
+        "service_type": request.service_type,
+        "event_date": request.event_date,
+        "event_time": request.event_time,
+        "duration_hours": request.duration_hours,
+        "message": request.message,
+        "inventory_items": request.inventory_items,
+        "status": "pending",
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc),
+    }
+    
+    await db.booking_requests.insert_one(request_data)
+    
+    return {"success": True, "request_id": request_data["request_id"]}
+
+@api_router.get("/booking-requests")
+async def get_provider_booking_requests(current_user: User = Depends(require_auth)):
+    """Get booking requests for the provider"""
+    profile = await db.user_profiles.find_one(
+        {"user_id": current_user.user_id},
+        {"_id": 0}
+    )
+    
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    
+    requests = await db.booking_requests.find(
+        {"provider_profile_id": current_user.user_id},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(100)
+    
+    return requests
+
+@api_router.get("/booking-requests/my-requests")
+async def get_my_booking_requests(current_user: User = Depends(require_auth)):
+    """Get booking requests made by the current user"""
+    requests = await db.booking_requests.find(
+        {"client_profile_id": current_user.user_id},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(100)
+    
+    return requests
+
+@api_router.put("/booking-requests/{request_id}")
+async def update_booking_request_status(
+    request_id: str,
+    data: Dict[str, Any],
+    current_user: User = Depends(require_auth)
+):
+    """Update booking request status (accept/reject)"""
+    request = await db.booking_requests.find_one(
+        {"request_id": request_id, "provider_profile_id": current_user.user_id},
+        {"_id": 0}
+    )
+    
+    if not request:
+        raise HTTPException(status_code=404, detail="Booking request not found")
+    
+    new_status = data.get("status")
+    
+    # If accepting camera rental, check freelancer restrictions
+    if new_status == "accepted" and request.get("service_type") == "camera_rental":
+        client_id = request.get("client_profile_id")
+        if client_id:
+            client_profile = await db.user_profiles.find_one(
+                {"user_id": client_id},
+                {"_id": 0}
+            )
+            
+            if client_profile and client_profile.get("is_freelancer"):
+                # Check for other active rentals
+                active_bookings = await db.booking_requests.find({
+                    "client_profile_id": client_id,
+                    "service_type": "camera_rental",
+                    "status": "accepted",
+                    "request_id": {"$ne": request_id}
+                }).to_list(100)
+                
+                if len(active_bookings) > 0:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="This freelancer must return their current rental equipment before taking delivery of new equipment"
+                    )
+    
+    await db.booking_requests.update_one(
+        {"request_id": request_id},
+        {"$set": {"status": new_status, "updated_at": datetime.now(timezone.utc)}}
+    )
+    
+    # If accepted, create a confirmed booking
+    if new_status == "accepted":
+        booking_data = {
+            "booking_id": f"book_{uuid.uuid4().hex[:12]}",
+            "provider_id": current_user.user_id,
+            "client_id": request.get("client_profile_id"),
+            "client_name": request.get("client_name"),
+            "client_contact": request.get("client_phone"),
+            "service_type": request.get("service_type"),
+            "booking_date": request.get("event_date"),
+            "booking_time": request.get("event_time"),
+            "duration_hours": request.get("duration_hours"),
+            "inventory_items": request.get("inventory_items"),
+            "status": "confirmed",
+            "notes": request.get("message"),
+            "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
+        }
+        
+        await db.bookings.insert_one(booking_data)
+        
+        # Notify client
+        if request.get("client_profile_id"):
+            await db.notifications.insert_one({
+                "user_id": request.get("client_profile_id"),
+                "type": "booking_accepted",
+                "title": "Booking Request Accepted",
+                "message": f"Your booking request for {request.get('service_type')} has been accepted!",
+                "data": {"request_id": request_id},
+                "read": False,
+                "created_at": datetime.now(timezone.utc)
+            })
+    
+    return {"success": True}
+
+@api_router.delete("/booking-requests/{request_id}")
+async def delete_booking_request(
+    request_id: str,
+    current_user: User = Depends(require_auth)
+):
+    """Delete a booking request"""
+    result = await db.booking_requests.delete_one({
+        "request_id": request_id,
+        "provider_profile_id": current_user.user_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Booking request not found")
+    
+    return {"success": True}
+
+@api_router.get("/booking-requests/active-camera-rentals")
+async def get_active_camera_rentals(current_user: User = Depends(require_auth)):
+    """Check active camera rental bookings for freelancers"""
+    profile = await db.user_profiles.find_one(
+        {"user_id": current_user.user_id},
+        {"_id": 0}
+    )
+    
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    
+    active_bookings = await db.booking_requests.find({
+        "client_profile_id": current_user.user_id,
+        "service_type": "camera_rental",
+        "status": {"$in": ["pending", "accepted"]}
+    }).to_list(100)
+    
+    return {
+        "has_active_bookings": len(active_bookings) > 0,
+        "active_bookings": active_bookings,
+        "is_freelancer": profile.get("is_freelancer", False),
+        "is_business": profile.get("is_business", False)
+    }
+
 @api_router.put("/bookings/{booking_id}/status")
 async def update_booking_status(
     booking_id: str,
