@@ -70,11 +70,9 @@ export default function HomeScreen() {
     try {
       const token = await AsyncStorage.getItem('session_token');
 
-      // Load blogs
       const blogsResponse = await axios.get(`${API_URL}/api/blogs?limit=5`);
       setBlogs(blogsResponse.data);
 
-      // Load notifications count
       const notifResponse = await axios.get(
         `${API_URL}/api/notifications/unread-count`,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -106,7 +104,6 @@ export default function HomeScreen() {
         colors={[colors.primary[50], colors.white, colors.gray[100]]}
         style={styles.gradient}
       >
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <Ionicons name="camera" size={32} color={colors.primary[600]} />
@@ -139,7 +136,6 @@ export default function HomeScreen() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          {/* Hero Banner */}
           <View style={styles.heroBanner}>
             <Text style={styles.heroTitle}>Find Your Creative Partner</Text>
             <Text style={styles.heroSubtitle}>
@@ -156,12 +152,11 @@ export default function HomeScreen() {
                 style={styles.heroButtonGradient}
               >
                 <Text style={styles.heroButtonText}>Browse Services</Text>
-                <Ionicons name=\"arrow-forward\" size={20} color={colors.white} />
+                <Ionicons name="arrow-forward" size={20} color={colors.white} />
               </LinearGradient>
             </TouchableOpacity>
           </View>
 
-          {/* Freelancer Services */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Freelancer Services</Text>
             <View style={styles.servicesGrid}>
@@ -188,7 +183,6 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Business Services */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Business Services</Text>
             <View style={styles.servicesGrid}>
@@ -217,7 +211,6 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Latest Blogs */}
           {blogs.length > 0 && (
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
@@ -255,27 +248,26 @@ export default function HomeScreen() {
             </View>
           )}
 
-          {/* Quick Actions */}
           <View style={styles.quickActions}>
             <TouchableOpacity
               style={styles.quickActionCard}
               onPress={() => router.push('/favorites')}
             >
-              <Ionicons name=\"heart\" size={28} color={colors.pink[500]} />
+              <Ionicons name="heart" size={28} color={colors.pink[500]} />
               <Text style={styles.quickActionText}>Favorites</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.quickActionCard}
               onPress={() => router.push('/equipment')}
             >
-              <Ionicons name=\"camera-outline\" size={28} color={colors.info} />
+              <Ionicons name="camera-outline" size={28} color={colors.info} />
               <Text style={styles.quickActionText}>Equipment</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.quickActionCard}
               onPress={() => router.push('/support')}
             >
-              <Ionicons name=\"help-circle\" size={28} color={colors.success} />
+              <Ionicons name="help-circle" size={28} color={colors.success} />
               <Text style={styles.quickActionText}>Support</Text>
             </TouchableOpacity>
           </View>
