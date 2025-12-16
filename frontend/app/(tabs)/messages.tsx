@@ -56,7 +56,7 @@ export default function MessagesScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Messages</Text>
+        <Text style={styles.headerTitle}>{t('common.messages')}</Text>
         <TouchableOpacity onPress={() => router.push('/new-message')}>
           <Ionicons name="create-outline" size={24} color={colors.primary[600]} />
         </TouchableOpacity>
