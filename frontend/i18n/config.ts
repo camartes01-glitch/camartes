@@ -33,10 +33,13 @@ const LANGUAGE_DETECTOR = {
   async: true,
   detect: async (callback: (lng: string) => void) => {
     try {
-      const savedLanguage = await AsyncStorage.getItem('user-language');
-      if (savedLanguage) {
-        callback(savedLanguage);
-        return;
+      // Check if we're in a browser/native environment
+      if (typeof window !== 'undefined') {
+        const savedLanguage = await AsyncStorage.getItem('user-language');
+        if (savedLanguage) {
+          callback(savedLanguage);
+          return;
+        }
       }
     } catch (error) {
       console.log('Error reading language', error);
@@ -46,7 +49,10 @@ const LANGUAGE_DETECTOR = {
   init: () => {},
   cacheUserLanguage: async (language: string) => {
     try {
-      await AsyncStorage.setItem('user-language', language);
+      // Check if we're in a browser/native environment
+      if (typeof window !== 'undefined') {
+        await AsyncStorage.setItem('user-language', language);
+      }
     } catch (error) {
       console.log('Error saving language', error);
     }
