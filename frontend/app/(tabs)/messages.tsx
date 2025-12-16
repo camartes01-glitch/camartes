@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors, spacing, borderRadius, typography, shadows } from '../../constants/theme';
@@ -20,6 +21,7 @@ const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
 export default function MessagesScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [conversations, setConversations] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
