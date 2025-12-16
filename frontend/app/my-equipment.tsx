@@ -10,6 +10,7 @@ import {
   RefreshControl,
   Modal,
   Dimensions,
+  Pressable,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,7 +20,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors, spacing, borderRadius, typography, shadows } from '../constants/theme';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
 const EQUIPMENT_TYPES = ['Camera', 'Lens', 'Lighting', 'Gimbal', 'Tripod', 'Drone', 'Audio', 'Accessories'];
@@ -51,13 +52,12 @@ export default function MyEquipmentScreen() {
   const [model, setModel] = useState('');
   const [serialNumber, setSerialNumber] = useState('');
   
-  // Autocomplete state
-  const [brandSuggestions, setBrandSuggestions] = useState<string[]>([]);
-  const [modelSuggestions, setModelSuggestions] = useState<string[]>([]);
-  const [showBrandDropdown, setShowBrandDropdown] = useState(false);
-  const [showModelDropdown, setShowModelDropdown] = useState(false);
-  const [allBrands, setAllBrands] = useState<string[]>([]);
-  const [allModels, setAllModels] = useState<string[]>([]);
+  // Picker modal state
+  const [showBrandPicker, setShowBrandPicker] = useState(false);
+  const [showModelPicker, setShowModelPicker] = useState(false);
+  const [brandOptions, setBrandOptions] = useState<string[]>([]);
+  const [modelOptions, setModelOptions] = useState<string[]>([]);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     loadEquipment();
@@ -71,8 +71,7 @@ export default function MyEquipmentScreen() {
     if (brand) {
       loadModels(selectedEquipmentType, brand);
     } else {
-      setAllModels([]);
-      setModelSuggestions([]);
+      setModelOptions([]);
     }
   }, [brand, selectedEquipmentType]);
 
@@ -86,7 +85,6 @@ export default function MyEquipmentScreen() {
       setEquipment(response.data || []);
     } catch (error) {
       console.error('Load equipment error:', error);
-      // Try alternate endpoint
       try {
         const token = await AsyncStorage.getItem('session_token');
         const response = await axios.get(`${API_URL}/api/equipment/my-equipment`, {
@@ -104,8 +102,7 @@ export default function MyEquipmentScreen() {
   const loadBrands = async (equipmentType: string) => {
     try {
       const response = await axios.get(`${API_URL}/api/equipment/brands?equipment_type=${equipmentType}`);
-      setAllBrands(response.data.brands || []);
-      setBrandSuggestions(response.data.brands || []);
+      setBrandOptions(response.data.brands || []);
     } catch (error) {
       console.error('Load brands error:', error);
     }
@@ -114,50 +111,10 @@ export default function MyEquipmentScreen() {
   const loadModels = async (equipmentType: string, brandName: string) => {
     try {
       const response = await axios.get(`${API_URL}/api/equipment/models?equipment_type=${equipmentType}&brand=${brandName}`);
-      setAllModels(response.data.models || []);
-      setModelSuggestions(response.data.models || []);
+      setModelOptions(response.data.models || []);
     } catch (error) {
       console.error('Load models error:', error);
     }
-  };
-
-  const filterBrands = (text: string) => {
-    setBrand(text);
-    if (text) {
-      const filtered = allBrands.filter(b => b.toLowerCase().includes(text.toLowerCase()));
-      setBrandSuggestions(filtered);
-      setShowBrandDropdown(filtered.length > 0);
-    } else {
-      setBrandSuggestions(allBrands);
-      setShowBrandDropdown(true);
-    }
-    // Reset model when brand changes
-    setModel('');
-    setModelSuggestions([]);
-  };
-
-  const filterModels = (text: string) => {
-    setModel(text);
-    if (text) {
-      const filtered = allModels.filter(m => m.toLowerCase().includes(text.toLowerCase()));
-      setModelSuggestions(filtered);
-      setShowModelDropdown(filtered.length > 0);
-    } else {
-      setModelSuggestions(allModels);
-      setShowModelDropdown(true);
-    }
-  };
-
-  const selectBrand = (selectedBrand: string) => {
-    setBrand(selectedBrand);
-    setShowBrandDropdown(false);
-    // Load models for this brand
-    loadModels(selectedEquipmentType, selectedBrand);
-  };
-
-  const selectModel = (selectedModel: string) => {
-    setModel(selectedModel);
-    setShowModelDropdown(false);
   };
 
   const onRefresh = async () => {
@@ -171,8 +128,7 @@ export default function MyEquipmentScreen() {
     setBrand('');
     setModel('');
     setSerialNumber('');
-    setShowBrandDropdown(false);
-    setShowModelDropdown(false);
+    setSearchText('');
   };
 
   const handleAddEquipment = async () => {
@@ -249,6 +205,109 @@ export default function MyEquipmentScreen() {
     return icons[type] || 'cube';
   };
 
+  const filteredBrands = searchText 
+    ? brandOptions.filter(b => b.toLowerCase().includes(searchText.toLowerCase()))
+    : brandOptions;
+
+  const filteredModels = searchText
+    ? modelOptions.filter(m => m.toLowerCase().includes(searchText.toLowerCase()))
+    : modelOptions;
+
+  // Selection Picker Modal Component
+  const SelectionPicker = ({ 
+    visible, 
+    onClose, 
+    title, 
+    options, 
+    onSelect,
+    emptyMessage 
+  }: { 
+    visible: boolean; 
+    onClose: () => void; 
+    title: string; 
+    options: string[];
+    onSelect: (value: string) => void;
+    emptyMessage?: string;
+  }) => (
+    <Modal visible={visible} animationType="slide" transparent>
+      <View style={styles.pickerOverlay}>
+        <View style={styles.pickerContainer}>
+          {/* Header */}
+          <View style={styles.pickerHeader}>
+            <Text style={styles.pickerTitle}>{title}</Text>
+            <TouchableOpacity onPress={onClose} style={styles.pickerCloseBtn}>
+              <Ionicons name="close" size={28} color={colors.gray[600]} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Search */}
+          <View style={styles.pickerSearchContainer}>
+            <Ionicons name="search" size={20} color={colors.gray[400]} />
+            <TextInput
+              style={styles.pickerSearchInput}
+              value={searchText}
+              onChangeText={setSearchText}
+              placeholder="Search..."
+              placeholderTextColor={colors.gray[400]}
+              autoFocus
+            />
+            {searchText !== '' && (
+              <TouchableOpacity onPress={() => setSearchText('')}>
+                <Ionicons name="close-circle" size={20} color={colors.gray[400]} />
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {/* Options List */}
+          <ScrollView style={styles.pickerList} keyboardShouldPersistTaps="handled">
+            {options.length > 0 ? (
+              options.map((option) => (
+                <TouchableOpacity
+                  key={option}
+                  style={styles.pickerOption}
+                  onPress={() => {
+                    onSelect(option);
+                    setSearchText('');
+                    onClose();
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.pickerOptionText}>{option}</Text>
+                  <Ionicons name="chevron-forward" size={20} color={colors.gray[400]} />
+                </TouchableOpacity>
+              ))
+            ) : (
+              <View style={styles.pickerEmpty}>
+                <Ionicons name="search-outline" size={48} color={colors.gray[300]} />
+                <Text style={styles.pickerEmptyText}>{emptyMessage || 'No options available'}</Text>
+              </View>
+            )}
+          </ScrollView>
+
+          {/* Custom Input Option */}
+          <View style={styles.pickerFooter}>
+            <Text style={styles.pickerFooterText}>Can't find your {title.toLowerCase()}?</Text>
+            <TouchableOpacity
+              style={styles.pickerCustomBtn}
+              onPress={() => {
+                if (searchText.trim()) {
+                  onSelect(searchText.trim());
+                  setSearchText('');
+                  onClose();
+                }
+              }}
+            >
+              <Ionicons name="add-circle" size={20} color={colors.primary[600]} />
+              <Text style={styles.pickerCustomBtnText}>
+                {searchText ? `Add "${searchText}"` : 'Type to add custom'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <LinearGradient colors={[colors.primary[50], colors.white]} style={styles.gradient}>
@@ -270,7 +329,7 @@ export default function MyEquipmentScreen() {
         <View style={styles.infoBanner}>
           <Ionicons name="information-circle" size={20} color={colors.info} />
           <Text style={styles.infoText}>
-            List your equipment to show clients what you work with. This helps build trust and showcases your professional gear.
+            List your equipment to show clients what you work with.
           </Text>
         </View>
 
@@ -357,68 +416,50 @@ export default function MyEquipmentScreen() {
                   </View>
                 </ScrollView>
 
-                {/* Brand with Autocomplete */}
+                {/* Brand Selection */}
                 <Text style={styles.formLabel}>Brand *</Text>
-                <View style={styles.autocompleteContainer}>
-                  <View style={styles.inputWithClear}>
-                    <TextInput
-                      style={styles.input}
-                      value={brand}
-                      onChangeText={filterBrands}
-                      onFocus={() => setShowBrandDropdown(brandSuggestions.length > 0)}
-                      placeholder="Type or select brand..."
-                      placeholderTextColor={colors.gray[400]}
-                    />
-                    {brand !== '' && (
-                      <TouchableOpacity style={styles.clearButton} onPress={() => { setBrand(''); setModel(''); }}>
-                        <Ionicons name="close-circle" size={20} color={colors.gray[400]} />
-                      </TouchableOpacity>
-                    )}
+                <TouchableOpacity 
+                  style={styles.selectorButton}
+                  onPress={() => setShowBrandPicker(true)}
+                >
+                  <View style={styles.selectorContent}>
+                    <Ionicons name="business-outline" size={20} color={brand ? colors.primary[600] : colors.gray[400]} />
+                    <Text style={[styles.selectorText, !brand && styles.selectorPlaceholder]}>
+                      {brand || 'Tap to select brand'}
+                    </Text>
                   </View>
-                  {showBrandDropdown && brandSuggestions.length > 0 && (
-                    <View style={styles.dropdown}>
-                      <ScrollView nestedScrollEnabled keyboardShouldPersistTaps="handled" style={{ maxHeight: 200 }}>
-                        {brandSuggestions.slice(0, 8).map((item) => (
-                          <TouchableOpacity key={item} style={styles.dropdownItem} onPress={() => selectBrand(item)}>
-                            <Text style={styles.dropdownText}>{item}</Text>
-                          </TouchableOpacity>
-                        ))}
-                      </ScrollView>
-                    </View>
-                  )}
-                </View>
+                  <Ionicons name="chevron-down" size={20} color={colors.gray[400]} />
+                </TouchableOpacity>
 
-                {/* Model with Autocomplete */}
+                {/* Model Selection */}
                 <Text style={styles.formLabel}>Model *</Text>
-                <View style={styles.autocompleteContainer}>
-                  <View style={styles.inputWithClear}>
-                    <TextInput
-                      style={[styles.input, !brand && styles.inputDisabled]}
-                      value={model}
-                      onChangeText={filterModels}
-                      onFocus={() => setShowModelDropdown(modelSuggestions.length > 0)}
-                      placeholder={brand ? "Type or select model..." : "Select brand first"}
-                      placeholderTextColor={colors.gray[400]}
-                      editable={!!brand}
-                    />
-                    {model !== '' && (
-                      <TouchableOpacity style={styles.clearButton} onPress={() => setModel('')}>
-                        <Ionicons name="close-circle" size={20} color={colors.gray[400]} />
-                      </TouchableOpacity>
-                    )}
+                <TouchableOpacity 
+                  style={[styles.selectorButton, !brand && styles.selectorDisabled]}
+                  onPress={() => brand && setShowModelPicker(true)}
+                  disabled={!brand}
+                >
+                  <View style={styles.selectorContent}>
+                    <Ionicons name="hardware-chip-outline" size={20} color={model ? colors.primary[600] : colors.gray[400]} />
+                    <Text style={[styles.selectorText, !model && styles.selectorPlaceholder]}>
+                      {model || (brand ? 'Tap to select model' : 'Select brand first')}
+                    </Text>
                   </View>
-                  {showModelDropdown && modelSuggestions.length > 0 && (
-                    <View style={styles.dropdown}>
-                      <ScrollView nestedScrollEnabled keyboardShouldPersistTaps="handled" style={{ maxHeight: 200 }}>
-                        {modelSuggestions.slice(0, 8).map((item) => (
-                          <TouchableOpacity key={item} style={styles.dropdownItem} onPress={() => selectModel(item)}>
-                            <Text style={styles.dropdownText}>{item}</Text>
-                          </TouchableOpacity>
-                        ))}
-                      </ScrollView>
+                  <Ionicons name="chevron-down" size={20} color={colors.gray[400]} />
+                </TouchableOpacity>
+
+                {/* Selected Preview */}
+                {brand && model && (
+                  <View style={styles.previewCard}>
+                    <Ionicons name={getEquipmentIcon(selectedEquipmentType) as any} size={24} color={colors.primary[600]} />
+                    <View style={styles.previewText}>
+                      <Text style={styles.previewTitle}>{brand} {model}</Text>
+                      <Text style={styles.previewSubtitle}>{selectedEquipmentType}</Text>
                     </View>
-                  )}
-                </View>
+                    <TouchableOpacity onPress={() => { setBrand(''); setModel(''); }}>
+                      <Ionicons name="close-circle" size={24} color={colors.gray[400]} />
+                    </TouchableOpacity>
+                  </View>
+                )}
 
                 {/* Serial Number */}
                 <Text style={styles.formLabel}>Serial Number *</Text>
@@ -440,6 +481,26 @@ export default function MyEquipmentScreen() {
             </View>
           </View>
         </Modal>
+
+        {/* Brand Picker */}
+        <SelectionPicker
+          visible={showBrandPicker}
+          onClose={() => { setShowBrandPicker(false); setSearchText(''); }}
+          title="Brand"
+          options={filteredBrands}
+          onSelect={(value) => { setBrand(value); setModel(''); }}
+          emptyMessage="No brands found"
+        />
+
+        {/* Model Picker */}
+        <SelectionPicker
+          visible={showModelPicker}
+          onClose={() => { setShowModelPicker(false); setSearchText(''); }}
+          title="Model"
+          options={filteredModels}
+          onSelect={setModel}
+          emptyMessage={brand ? "No models found for this brand" : "Select a brand first"}
+        />
       </LinearGradient>
     </SafeAreaView>
   );
@@ -537,7 +598,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: { ...typography.h3, color: colors.gray[900] },
   formScroll: { padding: spacing.lg },
-  formLabel: { ...typography.bodySmall, fontWeight: '600', color: colors.gray[700], marginBottom: spacing.sm, marginTop: spacing.md },
+  formLabel: { ...typography.bodySmall, fontWeight: '600', color: colors.gray[700], marginBottom: spacing.sm, marginTop: spacing.lg },
   typeScrollView: { marginBottom: spacing.sm },
   typeRow: { flexDirection: 'row', gap: spacing.sm },
   typeChip: {
@@ -545,7 +606,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingVertical: spacing.sm + 2,
     borderRadius: borderRadius.full,
     backgroundColor: colors.gray[100],
     borderWidth: 1,
@@ -554,42 +615,146 @@ const styles = StyleSheet.create({
   typeChipActive: { backgroundColor: colors.primary[500], borderColor: colors.primary[500] },
   typeChipText: { ...typography.bodySmall, fontWeight: '600', color: colors.gray[600] },
   typeChipTextActive: { color: colors.white },
-  autocompleteContainer: { position: 'relative', zIndex: 10 },
-  inputWithClear: { flexDirection: 'row', alignItems: 'center' },
-  input: {
-    flex: 1,
+  // Selector Button Styles
+  selectorButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.gray[300],
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm + 4,
+    paddingVertical: spacing.md,
+    minHeight: 52,
+  },
+  selectorDisabled: {
+    backgroundColor: colors.gray[100],
+    borderColor: colors.gray[200],
+  },
+  selectorContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    flex: 1,
+  },
+  selectorText: {
     ...typography.body,
     color: colors.gray[900],
   },
-  inputDisabled: { backgroundColor: colors.gray[100], color: colors.gray[500] },
-  clearButton: { position: 'absolute', right: spacing.sm },
-  dropdown: {
-    position: 'absolute',
-    top: '100%',
-    left: 0,
-    right: 0,
+  selectorPlaceholder: {
+    color: colors.gray[400],
+  },
+  // Preview Card
+  previewCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.primary[50],
+    padding: spacing.md,
+    borderRadius: borderRadius.md,
+    marginTop: spacing.md,
+    gap: spacing.sm,
+  },
+  previewText: { flex: 1 },
+  previewTitle: { ...typography.body, fontWeight: '600', color: colors.gray[900] },
+  previewSubtitle: { ...typography.caption, color: colors.primary[600] },
+  input: {
     backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: colors.gray[200],
+    borderColor: colors.gray[300],
     borderRadius: borderRadius.md,
-    maxHeight: 200,
-    ...shadows.lg,
-    zIndex: 100,
-  },
-  dropdownItem: {
-    paddingVertical: spacing.sm + 2,
     paddingHorizontal: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.gray[100],
+    paddingVertical: spacing.md,
+    ...typography.body,
+    color: colors.gray[900],
+    minHeight: 52,
   },
-  dropdownText: { ...typography.body, color: colors.gray[800] },
   submitButton: { marginTop: spacing.xl, marginBottom: spacing.xxl },
   submitGradient: { paddingVertical: spacing.md, borderRadius: borderRadius.md, alignItems: 'center' },
   submitText: { ...typography.body, color: colors.white, fontWeight: '700' },
+  // Picker Modal Styles
+  pickerOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  pickerContainer: {
+    backgroundColor: colors.white,
+    borderTopLeftRadius: borderRadius.xl,
+    borderTopRightRadius: borderRadius.xl,
+    maxHeight: height * 0.7,
+  },
+  pickerHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray[200],
+  },
+  pickerTitle: { ...typography.h3, color: colors.gray[900] },
+  pickerCloseBtn: { padding: spacing.xs },
+  pickerSearchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.gray[100],
+    margin: spacing.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.md,
+    gap: spacing.sm,
+  },
+  pickerSearchInput: {
+    flex: 1,
+    ...typography.body,
+    color: colors.gray[900],
+    paddingVertical: spacing.xs,
+  },
+  pickerList: {
+    maxHeight: height * 0.4,
+  },
+  pickerOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray[100],
+    minHeight: 56,
+  },
+  pickerOptionText: {
+    ...typography.body,
+    color: colors.gray[800],
+  },
+  pickerEmpty: {
+    alignItems: 'center',
+    paddingVertical: spacing.xxl,
+  },
+  pickerEmptyText: {
+    ...typography.body,
+    color: colors.gray[500],
+    marginTop: spacing.md,
+  },
+  pickerFooter: {
+    padding: spacing.lg,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray[200],
+    backgroundColor: colors.gray[50],
+  },
+  pickerFooterText: {
+    ...typography.caption,
+    color: colors.gray[600],
+    marginBottom: spacing.sm,
+  },
+  pickerCustomBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  pickerCustomBtnText: {
+    ...typography.body,
+    color: colors.primary[600],
+    fontWeight: '600',
+  },
 });
