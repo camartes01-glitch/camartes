@@ -152,5 +152,9 @@
     "bookings": "Bookings",
     "messages": "Messages",
     "account": "Account"
+  },
+  "messages": {
+    "noMessages": "No messages yet",
+    "startConversation": "Start a conversation with service providers"
   }
 }
