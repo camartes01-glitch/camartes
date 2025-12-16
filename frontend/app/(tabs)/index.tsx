@@ -109,7 +109,7 @@ export default function HomeScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Ionicons name=\"camera\" size={32} color={colors.primary[600]} />
+            <Ionicons name="camera" size={32} color={colors.primary[600]} />
             <Text style={styles.headerTitle}>Camartes</Text>
           </View>
           <View style={styles.headerRight}>
@@ -117,13 +117,13 @@ export default function HomeScreen() {
               style={styles.iconButton}
               onPress={() => router.push('/chatbot')}
             >
-              <Ionicons name=\"chatbubble-ellipses\" size={24} color={colors.primary[600]} />
+              <Ionicons name="chatbubble-ellipses" size={24} color={colors.primary[600]} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.iconButton}
               onPress={() => router.push('/notifications')}
             >
-              <Ionicons name=\"notifications\" size={24} color={colors.primary[600]} />
+              <Ionicons name="notifications" size={24} color={colors.primary[600]} />
               {unreadCount > 0 && (
                 <View style={styles.badge}>
                   <Text style={styles.badgeText}>{unreadCount}</Text>
