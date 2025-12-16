@@ -6,37 +6,38 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-  Animated,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { colors, spacing, borderRadius, typography, shadows } from '../../constants/theme';
 
 const { width } = Dimensions.get('window');
 
-const ALL_SERVICES = [
-  // Freelancer Services
-  { id: 'photographer', name: 'Photographer', icon: 'camera', type: 'freelancer', description: 'Professional photography services' },
-  { id: 'videographer', name: 'Videographer', icon: 'videocam', type: 'freelancer', description: 'Video recording & production' },
-  { id: 'album_designer', name: 'Album Designer', icon: 'images', type: 'freelancer', description: 'Beautiful album designs' },
-  { id: 'video_editor', name: 'Video Editor', icon: 'film', type: 'freelancer', description: 'Professional video editing' },
-  { id: 'web_live_services', name: 'Web Live', icon: 'wifi', type: 'freelancer', description: 'Live streaming services' },
-  { id: 'led_wall', name: 'LED Wall', icon: 'tv', type: 'freelancer', description: 'LED wall setup & management' },
-  
-  // Business Services
-  { id: 'photography_firm', name: 'Photography Firm', icon: 'business', type: 'business', description: 'Complete photography solutions' },
-  { id: 'camera_rental', name: 'Camera Rental', icon: 'camera', type: 'business', description: 'Rent professional cameras' },
-  { id: 'service_centres', name: 'Service Centres', icon: 'construct', type: 'business', description: 'Equipment repair & service' },
-  { id: 'outdoor_studios', name: 'Outdoor Studios', icon: 'home', type: 'business', description: 'Outdoor shooting locations' },
-  { id: 'editing_studios', name: 'Editing Studios', icon: 'film', type: 'business', description: 'Professional editing suites' },
-  { id: 'printing_labs', name: 'Printing Labs', icon: 'print', type: 'business', description: 'High-quality photo printing' },
-];
-
 export default function ServicesScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'all' | 'freelancer' | 'business'>('all');
+
+  const ALL_SERVICES = [
+    // Freelancer Services
+    { id: 'photographer', name: t('services.photographer'), icon: 'camera', type: 'freelancer', description: t('services.professionalPhotography') },
+    { id: 'videographer', name: t('services.videographer'), icon: 'videocam', type: 'freelancer', description: t('services.videoRecording') },
+    { id: 'album_designer', name: t('services.albumDesigner'), icon: 'images', type: 'freelancer', description: t('services.beautifulAlbums') },
+    { id: 'video_editor', name: t('services.videoEditor'), icon: 'film', type: 'freelancer', description: t('services.professionalEditing') },
+    { id: 'web_live_services', name: t('services.webLive'), icon: 'wifi', type: 'freelancer', description: t('services.liveStreaming') },
+    { id: 'led_wall', name: t('services.ledWall'), icon: 'tv', type: 'freelancer', description: t('services.ledWallSetup') },
+    
+    // Business Services
+    { id: 'photography_firm', name: t('services.photographyFirm'), icon: 'business', type: 'business', description: t('services.completeSolutions') },
+    { id: 'camera_rental', name: t('services.cameraRental'), icon: 'camera', type: 'business', description: t('services.rentCameras') },
+    { id: 'service_centres', name: t('services.serviceCentres'), icon: 'construct', type: 'business', description: t('services.equipmentRepair') },
+    { id: 'outdoor_studios', name: t('services.outdoorStudios'), icon: 'home', type: 'business', description: t('services.outdoorLocations') },
+    { id: 'editing_studios', name: t('services.editingStudios'), icon: 'film', type: 'business', description: t('services.editingSuites') },
+    { id: 'printing_labs', name: t('services.printingLabs'), icon: 'print', type: 'business', description: t('services.photoprinting') },
+  ];
 
   const filteredServices =
     activeTab === 'all'
@@ -59,8 +60,8 @@ export default function ServicesScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.headerTitle}>Services</Text>
-            <Text style={styles.headerSubtitle}>Explore creative services</Text>
+            <Text style={styles.headerTitle}>{t('common.services')}</Text>
+            <Text style={styles.headerSubtitle}>{t('services.exploreServices')}</Text>
           </View>
           <TouchableOpacity 
             style={styles.searchButton}
@@ -74,17 +75,17 @@ export default function ServicesScreen() {
         <View style={styles.statsBar}>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{ALL_SERVICES.length}</Text>
-            <Text style={styles.statLabel}>Total Services</Text>
+            <Text style={styles.statLabel}>{t('common.totalServices')}</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{freelancerCount}</Text>
-            <Text style={styles.statLabel}>Freelancers</Text>
+            <Text style={styles.statLabel}>{t('services.freelancers')}</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{businessCount}</Text>
-            <Text style={styles.statLabel}>Businesses</Text>
+            <Text style={styles.statLabel}>{t('services.businesses')}</Text>
           </View>
         </View>
 
@@ -111,7 +112,7 @@ export default function ServicesScreen() {
                   color={activeTab === 'all' ? colors.white : colors.gray[600]} 
                 />
                 <Text style={[styles.tabText, activeTab === 'all' && styles.tabTextActive]}>
-                  All Services
+                  {t('common.allServices')}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -136,7 +137,7 @@ export default function ServicesScreen() {
                   color={activeTab === 'freelancer' ? colors.white : colors.gray[600]} 
                 />
                 <Text style={[styles.tabText, activeTab === 'freelancer' && styles.tabTextActive]}>
-                  Freelancers
+                  {t('services.freelancers')}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -161,7 +162,7 @@ export default function ServicesScreen() {
                   color={activeTab === 'business' ? colors.white : colors.gray[600]} 
                 />
                 <Text style={[styles.tabText, activeTab === 'business' && styles.tabTextActive]}>
-                  Businesses
+                  {t('services.businesses')}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -208,7 +209,7 @@ export default function ServicesScreen() {
                       styles.exploreText,
                       { color: service.type === 'freelancer' ? colors.primary[700] : colors.secondary[700] }
                     ]}>
-                      Explore
+                      {t('common.explore')}
                     </Text>
                     <Ionicons
                       name="arrow-forward"
