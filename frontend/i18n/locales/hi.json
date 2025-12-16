@@ -152,5 +152,9 @@
     "bookings": "बुकिंग",
     "messages": "संदेश",
     "account": "अकाउंट"
+  },
+  "messages": {
+    "noMessages": "अभी कोई संदेश नहीं",
+    "startConversation": "सेवा प्रदाताओं के साथ बातचीत शुरू करें"
   }
 }
