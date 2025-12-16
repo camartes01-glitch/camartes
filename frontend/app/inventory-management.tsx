@@ -24,9 +24,20 @@ import { colors, spacing, borderRadius, typography, shadows } from '../constants
 const { width } = Dimensions.get('window');
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
+import * as ImagePicker from 'expo-image-picker';
+
 const EQUIPMENT_TYPES = ['Camera', 'Lens', 'Lighting', 'Gimbal', 'Tripod', 'Drone', 'Audio', 'Accessories'];
 const CONDITION_OPTIONS = ['excellent', 'good', 'fair', 'needs_repair'];
 const AVAILABILITY_OPTIONS = ['available', 'rented', 'maintenance', 'unavailable'];
+
+interface QCPhoto {
+  photo_id: string;
+  inventory_id: string;
+  qc_type: string;
+  image_base64: string;
+  file_name: string;
+  created_at: string;
+}
 
 interface InventoryItem {
   inventory_id: string;
