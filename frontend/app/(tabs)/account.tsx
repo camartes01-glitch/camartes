@@ -333,6 +333,11 @@ export default function AccountScreen() {
 
         {/* Menu Items */}
         <View style={styles.menuContainer}>
+          {/* Language Switcher - only show in account section */}
+          {activeSection === 'account' && (
+            <LanguageSwitcher />
+          )}
+          
           {(activeSection === 'provider' ? providerMenuItems : accountMenuItems).map((item) => (
             <TouchableOpacity
               key={item.id}
