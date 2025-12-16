@@ -28,6 +28,7 @@ interface MenuItem {
   action?: () => void;
   color?: string;
   badge?: number;
+  subtitle?: string;
 }
 
 export default function AccountScreen() {
