@@ -628,87 +628,30 @@ export default function InventoryManagementScreen() {
                   </View>
                 </ScrollView>
 
-                {/* Brand with Autocomplete */}
+                {/* Brand Selector */}
                 <Text style={styles.formLabel}>Brand *</Text>
-                <View style={styles.autocompleteContainer}>
-                  <View style={styles.inputRow}>
-                    <TextInput
-                      style={styles.input}
-                      value={formData.brand}
-                      onChangeText={(v) => {
-                        setFormData({ ...formData, brand: v, model: '' });
-                        const filtered = brandSuggestions.filter(b => b.toLowerCase().includes(v.toLowerCase()));
-                        setShowBrandDropdown(filtered.length > 0 && v.length > 0);
-                      }}
-                      onFocus={() => setShowBrandDropdown(brandSuggestions.length > 0)}
-                      placeholder="Type or select brand..."
-                      placeholderTextColor={colors.gray[400]}
-                    />
-                    {formData.brand !== '' && (
-                      <TouchableOpacity style={styles.clearBtn} onPress={() => setFormData({ ...formData, brand: '', model: '' })}>
-                        <Ionicons name="close-circle" size={20} color={colors.gray[400]} />
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                  {showBrandDropdown && (
-                    <View style={styles.dropdownList}>
-                      {brandSuggestions.filter(b => b.toLowerCase().includes(formData.brand.toLowerCase())).slice(0, 6).map((brand) => (
-                        <TouchableOpacity
-                          key={brand}
-                          style={styles.dropdownItem}
-                          onPress={() => {
-                            setFormData({ ...formData, brand, model: '' });
-                            setShowBrandDropdown(false);
-                            loadModelSuggestions(formData.equipment_type, brand);
-                          }}
-                        >
-                          <Text style={styles.dropdownText}>{brand}</Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  )}
-                </View>
+                <TouchableOpacity
+                  style={styles.selectorButton}
+                  onPress={() => setShowBrandDropdown(true)}
+                >
+                  <Text style={formData.brand ? styles.selectorText : styles.selectorPlaceholder}>
+                    {formData.brand || 'Tap to select brand'}
+                  </Text>
+                  <Ionicons name="chevron-down" size={20} color={colors.gray[500]} />
+                </TouchableOpacity>
 
-                {/* Model with Autocomplete */}
+                {/* Model Selector */}
                 <Text style={styles.formLabel}>Model *</Text>
-                <View style={styles.autocompleteContainer}>
-                  <View style={styles.inputRow}>
-                    <TextInput
-                      style={[styles.input, !formData.brand && styles.inputDisabled]}
-                      value={formData.model}
-                      onChangeText={(v) => {
-                        setFormData({ ...formData, model: v });
-                        const filtered = modelSuggestions.filter(m => m.toLowerCase().includes(v.toLowerCase()));
-                        setShowModelDropdown(filtered.length > 0 && v.length > 0);
-                      }}
-                      onFocus={() => setShowModelDropdown(modelSuggestions.length > 0)}
-                      placeholder={formData.brand ? "Type or select model..." : "Select brand first"}
-                      placeholderTextColor={colors.gray[400]}
-                      editable={!!formData.brand}
-                    />
-                    {formData.model !== '' && (
-                      <TouchableOpacity style={styles.clearBtn} onPress={() => setFormData({ ...formData, model: '' })}>
-                        <Ionicons name="close-circle" size={20} color={colors.gray[400]} />
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                  {showModelDropdown && (
-                    <View style={styles.dropdownList}>
-                      {modelSuggestions.filter(m => m.toLowerCase().includes(formData.model.toLowerCase())).slice(0, 6).map((model) => (
-                        <TouchableOpacity
-                          key={model}
-                          style={styles.dropdownItem}
-                          onPress={() => {
-                            setFormData({ ...formData, model });
-                            setShowModelDropdown(false);
-                          }}
-                        >
-                          <Text style={styles.dropdownText}>{model}</Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  )}
-                </View>
+                <TouchableOpacity
+                  style={[styles.selectorButton, !formData.brand && styles.selectorDisabled]}
+                  onPress={() => formData.brand && setShowModelDropdown(true)}
+                  disabled={!formData.brand}
+                >
+                  <Text style={formData.model ? styles.selectorText : styles.selectorPlaceholder}>
+                    {formData.model || (formData.brand ? 'Tap to select model' : 'Select brand first')}
+                  </Text>
+                  <Ionicons name="chevron-down" size={20} color={colors.gray[500]} />
+                </TouchableOpacity>
 
                 <Text style={styles.formLabel}>Serial Number *</Text>
                 <TextInput style={styles.input} value={formData.serial_number} onChangeText={(v) => setFormData({ ...formData, serial_number: v })} placeholder="Enter serial number" placeholderTextColor={colors.gray[400]} />
