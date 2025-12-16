@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  RefreshControl,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,6 +27,7 @@ interface MenuItem {
   route?: string;
   action?: () => void;
   color?: string;
+  badge?: number;
 }
 
 export default function AccountScreen() {
@@ -33,11 +35,17 @@ export default function AccountScreen() {
   const { user, logout } = useAuth();
   const [profile, setProfile] = useState<any>(null);
   const [analytics, setAnalytics] = useState<any>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [activeSection, setActiveSection] = useState<'provider' | 'account'>('provider');
 
   useEffect(() => {
-    loadProfile();
-    loadAnalytics();
+    loadData();
   }, []);
+
+  const loadData = async () => {
+    await loadProfile();
+    await loadAnalytics();
+  };
 
   const loadProfile = async () => {
     try {
@@ -65,6 +73,12 @@ export default function AccountScreen() {
     }
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  };
+
   const handleLogout = () => {
     Alert.alert(
       'Logout',
@@ -83,20 +97,14 @@ export default function AccountScreen() {
     );
   };
 
-  const menuItems: MenuItem[] = [
-    {
-      id: 'profile',
-      title: 'Edit Profile',
-      icon: 'person-outline',
-      route: '/edit-profile',
-      color: colors.primary[500],
-    },
+  const providerMenuItems: MenuItem[] = [
     {
       id: 'portfolio',
       title: 'Portfolio',
       icon: 'images-outline',
       route: '/portfolio',
       color: colors.secondary[500],
+      badge: analytics?.portfolio_items,
     },
     {
       id: 'services',
@@ -120,18 +128,28 @@ export default function AccountScreen() {
       color: colors.pink[500],
     },
     {
-      id: 'favorites',
-      title: 'Favorites',
-      icon: 'heart-outline',
-      route: '/favorites',
-      color: colors.error,
-    },
-    {
       id: 'verification',
       title: 'Verification',
       icon: 'shield-checkmark-outline',
       route: '/verification',
       color: colors.success,
+    },
+  ];
+
+  const accountMenuItems: MenuItem[] = [
+    {
+      id: 'profile',
+      title: 'Edit Profile',
+      icon: 'person-outline',
+      route: '/edit-profile',
+      color: colors.primary[500],
+    },
+    {
+      id: 'favorites',
+      title: 'Favorites',
+      icon: 'heart-outline',
+      route: '/favorites',
+      color: colors.error,
     },
     {
       id: 'support',
@@ -160,28 +178,50 @@ export default function AccountScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         {/* Profile Header */}
         <LinearGradient
           colors={[colors.primary[500], colors.primary[700]]}
           style={styles.profileHeader}
         >
-          <View style={styles.avatarContainer}>
-            {user?.picture ? (
-              <Image source={{ uri: user.picture }} style={styles.avatar} />
-            ) : (
-              <View style={styles.avatarPlaceholder}>
-                <Ionicons name="person" size={48} color={colors.white} />
+          <View style={styles.headerTop}>
+            <View style={styles.avatarContainer}>
+              {user?.picture ? (
+                <Image source={{ uri: user.picture }} style={styles.avatar} />
+              ) : (
+                <View style={styles.avatarPlaceholder}>
+                  <Ionicons name="person" size={48} color={colors.white} />
+                </View>
+              )}
+              <View style={styles.verifiedBadge}>
+                <Ionicons name="checkmark-circle" size={20} color={colors.success} />
               </View>
-            )}
+            </View>
           </View>
+          
           <Text style={styles.userName}>{user?.name || 'User'}</Text>
           <Text style={styles.userEmail}>{user?.email}</Text>
+          
           {profile?.city && (
             <View style={styles.locationBadge}>
               <Ionicons name="location" size={14} color={colors.white} />
               <Text style={styles.locationText}>{profile.city}</Text>
+            </View>
+          )}
+
+          {profile?.is_freelancer && (
+            <View style={styles.typeBadge}>
+              <Ionicons name="star" size={14} color={colors.warning} />
+              <Text style={styles.typeBadgeText}>Freelancer</Text>
+            </View>
+          )}
+          {profile?.is_business && (
+            <View style={styles.typeBadge}>
+              <Ionicons name="business" size={14} color={colors.info} />
+              <Text style={styles.typeBadgeText}>Business</Text>
             </View>
           )}
         </LinearGradient>
@@ -190,29 +230,90 @@ export default function AccountScreen() {
         {analytics && (
           <View style={styles.analyticsContainer}>
             <View style={styles.analyticsCard}>
-              <Text style={styles.analyticsValue}>{analytics.total_bookings}</Text>
-              <Text style={styles.analyticsLabel}>Bookings</Text>
+              <LinearGradient
+                colors={[colors.primary[400], colors.primary[600]]}
+                style={styles.analyticsGradient}
+              >
+                <Ionicons name="calendar" size={28} color={colors.white} />
+                <Text style={styles.analyticsValue}>{analytics.total_bookings}</Text>
+                <Text style={styles.analyticsLabel}>Bookings</Text>
+              </LinearGradient>
             </View>
             <View style={styles.analyticsCard}>
-              <Text style={styles.analyticsValue}>
-                {analytics.average_rating.toFixed(1)}
-              </Text>
-              <Text style={styles.analyticsLabel}>Rating</Text>
+              <LinearGradient
+                colors={[colors.warning, colors.orange[600]]}
+                style={styles.analyticsGradient}
+              >
+                <Ionicons name="star" size={28} color={colors.white} />
+                <Text style={styles.analyticsValue}>
+                  {analytics.average_rating.toFixed(1)}
+                </Text>
+                <Text style={styles.analyticsLabel}>Rating</Text>
+              </LinearGradient>
             </View>
             <View style={styles.analyticsCard}>
-              <Text style={styles.analyticsValue}>{analytics.total_reviews}</Text>
-              <Text style={styles.analyticsLabel}>Reviews</Text>
+              <LinearGradient
+                colors={[colors.secondary[400], colors.secondary[600]]}
+                style={styles.analyticsGradient}
+              >
+                <Ionicons name="chatbox" size={28} color={colors.white} />
+                <Text style={styles.analyticsValue}>{analytics.total_reviews}</Text>
+                <Text style={styles.analyticsLabel}>Reviews</Text>
+              </LinearGradient>
             </View>
             <View style={styles.analyticsCard}>
-              <Text style={styles.analyticsValue}>{analytics.portfolio_items}</Text>
-              <Text style={styles.analyticsLabel}>Portfolio</Text>
+              <LinearGradient
+                colors={[colors.info, colors.info]}
+                style={styles.analyticsGradient}
+              >
+                <Ionicons name="images" size={28} color={colors.white} />
+                <Text style={styles.analyticsValue}>{analytics.portfolio_items}</Text>
+                <Text style={styles.analyticsLabel}>Portfolio</Text>
+              </LinearGradient>
             </View>
           </View>
         )}
 
+        {/* Section Tabs */}
+        <View style={styles.sectionTabs}>
+          <TouchableOpacity
+            style={[styles.sectionTab, activeSection === 'provider' && styles.sectionTabActive]}
+            onPress={() => setActiveSection('provider')}
+          >
+            <Ionicons 
+              name="briefcase" 
+              size={20} 
+              color={activeSection === 'provider' ? colors.primary[600] : colors.gray[500]} 
+            />
+            <Text style={[
+              styles.sectionTabText,
+              activeSection === 'provider' && styles.sectionTabTextActive
+            ]}>
+              Provider Tools
+            </Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={[styles.sectionTab, activeSection === 'account' && styles.sectionTabActive]}
+            onPress={() => setActiveSection('account')}
+          >
+            <Ionicons 
+              name="settings" 
+              size={20} 
+              color={activeSection === 'account' ? colors.primary[600] : colors.gray[500]} 
+            />
+            <Text style={[
+              styles.sectionTabText,
+              activeSection === 'account' && styles.sectionTabTextActive
+            ]}>
+              Account Settings
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Menu Items */}
         <View style={styles.menuContainer}>
-          {menuItems.map((item) => (
+          {(activeSection === 'provider' ? providerMenuItems : accountMenuItems).map((item) => (
             <TouchableOpacity
               key={item.id}
               style={styles.menuItem}
@@ -238,7 +339,14 @@ export default function AccountScreen() {
                     color={item.color || colors.primary[500]}
                   />
                 </View>
-                <Text style={styles.menuItemText}>{item.title}</Text>
+                <View style={styles.menuItemContent}>
+                  <Text style={styles.menuItemText}>{item.title}</Text>
+                  {item.badge !== undefined && item.badge > 0 && (
+                    <View style={styles.menuBadge}>
+                      <Text style={styles.menuBadgeText}>{item.badge}</Text>
+                    </View>
+                  )}
+                </View>
               </View>
               <Ionicons name="chevron-forward" size={20} color={colors.gray[400]} />
             </TouchableOpacity>
@@ -256,15 +364,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.gray[50],
   },
-  scrollContent: {
-    paddingBottom: spacing.xl,
-  },
   profileHeader: {
     padding: spacing.xl,
+    paddingTop: spacing.lg,
     alignItems: 'center',
   },
-  avatarContainer: {
+  headerTop: {
+    alignItems: 'center',
     marginBottom: spacing.md,
+  },
+  avatarContainer: {
+    position: 'relative',
   },
   avatar: {
     width: 100,
@@ -283,8 +393,19 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: colors.white,
   },
+  verifiedBadge: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: colors.white,
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   userName: {
-    ...typography.h3,
+    ...typography.h2,
     color: colors.white,
     marginBottom: spacing.xs,
   },
@@ -301,11 +422,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: borderRadius.full,
+    marginBottom: spacing.xs,
   },
   locationText: {
     ...typography.bodySmall,
     color: colors.white,
     fontWeight: '600',
+  },
+  typeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+    borderRadius: borderRadius.sm,
+    marginTop: spacing.xs,
+  },
+  typeBadgeText: {
+    ...typography.caption,
+    fontWeight: '700',
+    color: colors.gray[800],
   },
   analyticsContainer: {
     flexDirection: 'row',
@@ -316,21 +453,55 @@ const styles = StyleSheet.create({
   },
   analyticsCard: {
     flex: 1,
-    backgroundColor: colors.white,
-    padding: spacing.md,
     borderRadius: borderRadius.md,
-    alignItems: 'center',
+    overflow: 'hidden',
     ...shadows.lg,
+  },
+  analyticsGradient: {
+    padding: spacing.md,
+    alignItems: 'center',
+    gap: spacing.xs,
   },
   analyticsValue: {
     ...typography.h3,
-    color: colors.primary[600],
-    marginBottom: spacing.xs,
+    color: colors.white,
+    fontWeight: '800',
   },
   analyticsLabel: {
     ...typography.caption,
-    color: colors.gray[600],
+    color: colors.white,
     fontWeight: '600',
+    opacity: 0.9,
+  },
+  sectionTabs: {
+    flexDirection: 'row',
+    paddingHorizontal: spacing.lg,
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+  },
+  sectionTab: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.sm + 2,
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.md,
+    borderWidth: 2,
+    borderColor: colors.gray[200],
+  },
+  sectionTabActive: {
+    borderColor: colors.primary[500],
+    backgroundColor: colors.primary[50],
+  },
+  sectionTabText: {
+    ...typography.bodySmall,
+    fontWeight: '700',
+    color: colors.gray[600],
+  },
+  sectionTabTextActive: {
+    color: colors.primary[700],
   },
   menuContainer: {
     paddingHorizontal: spacing.lg,
@@ -348,18 +519,40 @@ const styles = StyleSheet.create({
   menuItemLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.md,
+    flex: 1,
   },
   menuIconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: spacing.md,
+  },
+  menuItemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    flex: 1,
   },
   menuItemText: {
     ...typography.body,
     color: colors.gray[900],
     fontWeight: '600',
+  },
+  menuBadge: {
+    backgroundColor: colors.primary[500],
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 6,
+  },
+  menuBadgeText: {
+    ...typography.caption,
+    fontSize: 11,
+    color: colors.white,
+    fontWeight: '700',
   },
 });
