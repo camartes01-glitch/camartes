@@ -67,8 +67,19 @@ export default function InventoryManagementScreen() {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [showForm, setShowForm] = useState(false);
   const [showRentModal, setShowRentModal] = useState(false);
+  const [showQCModal, setShowQCModal] = useState<{ item: InventoryItem; qcType: 'delivery' | 'return' } | null>(null);
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
+  
+  // Autocomplete state
+  const [brandSuggestions, setBrandSuggestions] = useState<string[]>([]);
+  const [modelSuggestions, setModelSuggestions] = useState<string[]>([]);
+  const [showBrandDropdown, setShowBrandDropdown] = useState(false);
+  const [showModelDropdown, setShowModelDropdown] = useState(false);
+  
+  // QC Photos state
+  const [qcPhotos, setQcPhotos] = useState<QCPhoto[]>([]);
+  const [uploadingQC, setUploadingQC] = useState(false);
   
   // Form State
   const [formData, setFormData] = useState({
@@ -104,6 +115,98 @@ export default function InventoryManagementScreen() {
   useEffect(() => {
     loadInventory();
   }, []);
+  
+  // Load brand suggestions when equipment type changes
+  useEffect(() => {
+    loadBrandSuggestions(formData.equipment_type);
+  }, [formData.equipment_type]);
+  
+  // Load model suggestions when brand changes
+  useEffect(() => {
+    if (formData.brand) {
+      loadModelSuggestions(formData.equipment_type, formData.brand);
+    }
+  }, [formData.brand]);
+  
+  const loadBrandSuggestions = async (equipmentType: string) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/equipment/brands?equipment_type=${equipmentType}`);
+      setBrandSuggestions(response.data.brands || []);
+    } catch (error) {
+      console.error('Failed to load brands:', error);
+    }
+  };
+  
+  const loadModelSuggestions = async (equipmentType: string, brand: string) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/equipment/models?equipment_type=${equipmentType}&brand=${brand}`);
+      setModelSuggestions(response.data.models || []);
+    } catch (error) {
+      console.error('Failed to load models:', error);
+    }
+  };
+  
+  const loadQCPhotos = async (inventoryId: string) => {
+    try {
+      const token = await AsyncStorage.getItem('session_token');
+      const response = await axios.get(`${API_URL}/api/inventory/${inventoryId}/qc-photos`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setQcPhotos(response.data || []);
+    } catch (error) {
+      console.error('Failed to load QC photos:', error);
+    }
+  };
+  
+  const handleUploadQCPhoto = async () => {
+    if (!showQCModal) return;
+    
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      quality: 0.5,
+      base64: true,
+    });
+    
+    if (!result.canceled && result.assets[0].base64) {
+      try {
+        setUploadingQC(true);
+        const token = await AsyncStorage.getItem('session_token');
+        
+        await axios.post(
+          `${API_URL}/api/inventory/${showQCModal.item.inventory_id}/qc-photos`,
+          {
+            inventory_id: showQCModal.item.inventory_id,
+            qc_type: showQCModal.qcType,
+            image_base64: result.assets[0].base64,
+            file_name: `qc_${Date.now()}.jpg`,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        
+        Alert.alert('Success', 'QC photo uploaded!');
+        await loadQCPhotos(showQCModal.item.inventory_id);
+      } catch (error) {
+        Alert.alert('Error', 'Failed to upload QC photo');
+      } finally {
+        setUploadingQC(false);
+      }
+    }
+  };
+  
+  const handleDeleteQCPhoto = async (photoId: string) => {
+    try {
+      const token = await AsyncStorage.getItem('session_token');
+      await axios.delete(`${API_URL}/api/inventory/qc-photos/${photoId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      setQcPhotos(qcPhotos.filter(p => p.photo_id !== photoId));
+      Alert.alert('Success', 'Photo deleted');
+    } catch (error) {
+      Alert.alert('Error', 'Failed to delete photo');
+    }
+  };
 
   const loadInventory = async () => {
     try {
