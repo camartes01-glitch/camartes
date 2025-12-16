@@ -759,10 +759,11 @@ async def add_equipment(
     """Add equipment for rental"""
     equipment_data = equipment.dict()
     equipment_data["owner_id"] = current_user.user_id
+    equipment_data["equipment_id"] = f"equip_{uuid.uuid4().hex[:12]}"
     equipment_data["created_at"] = datetime.now(timezone.utc)
     
     result = await db.equipment.insert_one(equipment_data)
-    return {"message": "Equipment added", "id": str(result.inserted_id)}
+    return {"message": "Equipment added", "id": str(result.inserted_id), "equipment_id": equipment_data["equipment_id"]}
 
 @api_router.get("/equipment")
 async def get_equipment(category: Optional[str] = None):
@@ -783,6 +784,359 @@ async def get_my_equipment(current_user: User = Depends(require_auth)):
     ).to_list(100)
     
     return equipment
+
+@api_router.put("/equipment/{equipment_id}")
+async def update_equipment(
+    equipment_id: str,
+    data: Dict[str, Any],
+    current_user: User = Depends(require_auth)
+):
+    """Update equipment"""
+    data["updated_at"] = datetime.now(timezone.utc)
+    
+    result = await db.equipment.update_one(
+        {"equipment_id": equipment_id, "owner_id": current_user.user_id},
+        {"$set": data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Equipment not found")
+    
+    return {"message": "Equipment updated"}
+
+@api_router.delete("/equipment/{equipment_id}")
+async def delete_equipment(
+    equipment_id: str,
+    current_user: User = Depends(require_auth)
+):
+    """Delete equipment"""
+    result = await db.equipment.delete_one({
+        "equipment_id": equipment_id,
+        "owner_id": current_user.user_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Equipment not found")
+    
+    return {"message": "Equipment deleted"}
+
+# ==================== INVENTORY MANAGEMENT ENDPOINTS ====================
+# Full inventory management for camera rental business
+
+class InventoryItem(BaseModel):
+    equipment_type: str  # Camera, Lens, Lighting, Gimbal, Tripod, Drone, Audio, Accessories
+    brand: str
+    model: str
+    serial_number: str
+    purchase_date: Optional[str] = None
+    condition_status: str = "excellent"  # excellent, good, fair, needs_repair
+    availability_status: str = "available"  # available, rented, maintenance, unavailable
+    rental_price_6h: Optional[float] = None
+    rental_price_8h: Optional[float] = None
+    rental_price_12h: Optional[float] = None
+    rental_price_24h: Optional[float] = None
+    maintenance_notes: Optional[str] = None
+
+class RentOutRequest(BaseModel):
+    renter_name: str
+    renter_contact: str
+    start_date: str
+    end_date: str
+
+class ReturnRequest(BaseModel):
+    availability_status: str = "available"
+    condition_status: str = "excellent"
+    maintenance_notes: Optional[str] = None
+
+@api_router.post("/inventory")
+async def create_inventory_item(
+    item: InventoryItem,
+    current_user: User = Depends(require_auth)
+):
+    """Create inventory item for camera rental business"""
+    # Check if user has business profile
+    profile = await db.user_profiles.find_one(
+        {"user_id": current_user.user_id},
+        {"_id": 0}
+    )
+    
+    if not profile or not profile.get("is_business"):
+        raise HTTPException(status_code=403, detail="Only business accounts can manage inventory")
+    
+    item_data = item.dict()
+    item_data["owner_id"] = current_user.user_id
+    item_data["inventory_id"] = f"inv_{uuid.uuid4().hex[:12]}"
+    item_data["created_at"] = datetime.now(timezone.utc)
+    item_data["updated_at"] = datetime.now(timezone.utc)
+    
+    await db.inventory.insert_one(item_data)
+    
+    return {
+        "success": True,
+        "inventory_id": item_data["inventory_id"]
+    }
+
+@api_router.get("/inventory")
+async def get_inventory(current_user: User = Depends(require_auth)):
+    """Get all inventory items for current user"""
+    inventory = await db.inventory.find(
+        {"owner_id": current_user.user_id},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(500)
+    
+    return inventory
+
+@api_router.get("/inventory/available")
+async def get_available_inventory(
+    city: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None
+):
+    """Get available inventory for booking (public endpoint)"""
+    query = {"availability_status": "available"}
+    
+    inventory = await db.inventory.find(query, {"_id": 0}).to_list(500)
+    
+    # Enrich with owner details
+    for item in inventory:
+        owner_profile = await db.user_profiles.find_one(
+            {"user_id": item["owner_id"]},
+            {"_id": 0, "full_name": 1, "city": 1}
+        )
+        if owner_profile:
+            item["provider_name"] = owner_profile.get("full_name")
+            item["city"] = owner_profile.get("city")
+    
+    # Filter by city if provided
+    if city:
+        inventory = [i for i in inventory if i.get("city", "").lower() == city.lower()]
+    
+    return inventory
+
+@api_router.get("/inventory/{inventory_id}")
+async def get_inventory_item(
+    inventory_id: str,
+    current_user: User = Depends(require_auth)
+):
+    """Get single inventory item"""
+    item = await db.inventory.find_one(
+        {"inventory_id": inventory_id, "owner_id": current_user.user_id},
+        {"_id": 0}
+    )
+    
+    if not item:
+        raise HTTPException(status_code=404, detail="Inventory item not found")
+    
+    return item
+
+@api_router.put("/inventory/{inventory_id}")
+async def update_inventory_item(
+    inventory_id: str,
+    item: InventoryItem,
+    current_user: User = Depends(require_auth)
+):
+    """Update inventory item"""
+    item_data = item.dict()
+    item_data["updated_at"] = datetime.now(timezone.utc)
+    
+    result = await db.inventory.update_one(
+        {"inventory_id": inventory_id, "owner_id": current_user.user_id},
+        {"$set": item_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Inventory item not found")
+    
+    return {"success": True}
+
+@api_router.delete("/inventory/{inventory_id}")
+async def delete_inventory_item(
+    inventory_id: str,
+    current_user: User = Depends(require_auth)
+):
+    """Delete inventory item"""
+    result = await db.inventory.delete_one({
+        "inventory_id": inventory_id,
+        "owner_id": current_user.user_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Inventory item not found")
+    
+    return {"success": True}
+
+@api_router.post("/inventory/{inventory_id}/rent")
+async def rent_inventory_item(
+    inventory_id: str,
+    rent_data: RentOutRequest,
+    current_user: User = Depends(require_auth)
+):
+    """Mark inventory item as rented"""
+    update_data = {
+        "availability_status": "rented",
+        "current_renter_name": rent_data.renter_name,
+        "current_renter_contact": rent_data.renter_contact,
+        "rental_start_date": rent_data.start_date,
+        "rental_end_date": rent_data.end_date,
+        "updated_at": datetime.now(timezone.utc)
+    }
+    
+    result = await db.inventory.update_one(
+        {"inventory_id": inventory_id, "owner_id": current_user.user_id},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Inventory item not found")
+    
+    return {"success": True}
+
+@api_router.post("/inventory/{inventory_id}/return")
+async def return_inventory_item(
+    inventory_id: str,
+    return_data: ReturnRequest,
+    current_user: User = Depends(require_auth)
+):
+    """Mark inventory item as returned"""
+    update_data = {
+        "availability_status": return_data.availability_status,
+        "condition_status": return_data.condition_status,
+        "maintenance_notes": return_data.maintenance_notes,
+        "current_renter_name": None,
+        "current_renter_contact": None,
+        "rental_start_date": None,
+        "rental_end_date": None,
+        "updated_at": datetime.now(timezone.utc)
+    }
+    
+    result = await db.inventory.update_one(
+        {"inventory_id": inventory_id, "owner_id": current_user.user_id},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Inventory item not found")
+    
+    return {"success": True}
+
+# ==================== USER SERVICES ENDPOINTS ====================
+
+class UserServiceSelection(BaseModel):
+    services: List[Dict[str, str]]  # List of {service_id, service_category}
+
+@api_router.get("/user-services")
+async def get_user_services(current_user: User = Depends(require_auth)):
+    """Get user's selected services"""
+    services = await db.user_services.find(
+        {"user_id": current_user.user_id},
+        {"_id": 0}
+    ).to_list(100)
+    
+    return services
+
+@api_router.post("/user-services")
+async def save_user_services(
+    selection: UserServiceSelection,
+    current_user: User = Depends(require_auth)
+):
+    """Save user's selected services"""
+    # Delete existing services
+    await db.user_services.delete_many({"user_id": current_user.user_id})
+    
+    # Insert new services
+    for service in selection.services:
+        await db.user_services.insert_one({
+            "user_id": current_user.user_id,
+            "service_id": service["service_id"],
+            "service_category": service["service_category"],
+            "created_at": datetime.now(timezone.utc)
+        })
+    
+    return {"success": True}
+
+# ==================== SERVICE DETAILS/PRICING ENDPOINTS ====================
+
+class ServiceDetails(BaseModel):
+    service_type: str
+    years_experience: Optional[int] = 0
+    specialties: Optional[str] = None  # JSON string
+    quality_options: Optional[str] = None  # JSON string
+
+class ServicePricing(BaseModel):
+    service_type: str
+    price_6_hours: Optional[float] = None
+    price_8_hours: Optional[float] = None
+    price_12_hours: Optional[float] = None
+    price_24_hours: Optional[float] = None
+    price_per_pic: Optional[float] = None
+    price_per_page: Optional[float] = None
+    price_per_minute: Optional[float] = None
+    price_per_hour: Optional[float] = None
+    price_per_event: Optional[float] = None
+    price_per_album: Optional[float] = None
+    price_per_video: Optional[float] = None
+
+@api_router.get("/services/details/{service_type}")
+async def get_service_details(
+    service_type: str,
+    current_user: User = Depends(require_auth)
+):
+    """Get service details for a specific service type"""
+    details = await db.service_details.find_one(
+        {"user_id": current_user.user_id, "service_type": service_type},
+        {"_id": 0}
+    )
+    
+    return details or {}
+
+@api_router.post("/services/details")
+async def save_service_details(
+    details: ServiceDetails,
+    current_user: User = Depends(require_auth)
+):
+    """Save service details"""
+    details_data = details.dict()
+    details_data["user_id"] = current_user.user_id
+    details_data["updated_at"] = datetime.now(timezone.utc)
+    
+    await db.service_details.update_one(
+        {"user_id": current_user.user_id, "service_type": details.service_type},
+        {"$set": details_data},
+        upsert=True
+    )
+    
+    return {"success": True}
+
+@api_router.get("/services/pricing/{service_type}")
+async def get_service_pricing(
+    service_type: str,
+    current_user: User = Depends(require_auth)
+):
+    """Get pricing for a specific service type"""
+    pricing = await db.service_pricing.find_one(
+        {"user_id": current_user.user_id, "service_type": service_type},
+        {"_id": 0}
+    )
+    
+    return pricing or {}
+
+@api_router.post("/services/pricing")
+async def save_service_pricing(
+    pricing: ServicePricing,
+    current_user: User = Depends(require_auth)
+):
+    """Save service pricing"""
+    pricing_data = pricing.dict()
+    pricing_data["user_id"] = current_user.user_id
+    pricing_data["updated_at"] = datetime.now(timezone.utc)
+    
+    await db.service_pricing.update_one(
+        {"user_id": current_user.user_id, "service_type": pricing.service_type},
+        {"$set": pricing_data},
+        upsert=True
+    )
+    
+    return {"success": True}
 
 # ==================== FAVORITES ENDPOINTS ====================
 
