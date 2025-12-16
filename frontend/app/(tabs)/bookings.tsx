@@ -9,14 +9,15 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors, spacing, borderRadius, typography, shadows } from '../../constants/theme';
-import { format } from 'date-fns';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
 export default function BookingsScreen() {
+  const { t } = useTranslation();
   const [bookings, setBookings] = useState([]);
   const [requests, setRequests] = useState([]);
   const [activeTab, setActiveTab] = useState<'my-bookings' | 'requests'>('my-bookings');
@@ -150,7 +151,7 @@ export default function BookingsScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Bookings</Text>
+        <Text style={styles.headerTitle}>{t('common.bookings')}</Text>
       </View>
 
       {/* Tabs */}
@@ -168,7 +169,7 @@ export default function BookingsScreen() {
               activeTab === 'my-bookings' && styles.tabTextActive,
             ]}
           >
-            My Bookings
+            {t('booking.myBookings')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -184,7 +185,7 @@ export default function BookingsScreen() {
               activeTab === 'requests' && styles.tabTextActive,
             ]}
           >
-            Requests
+            {t('booking.requests')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -203,9 +204,9 @@ export default function BookingsScreen() {
           ) : (
             <View style={styles.emptyState}>
               <Ionicons name="calendar-outline" size={64} color={colors.gray[300]} />
-              <Text style={styles.emptyText}>No bookings yet</Text>
+              <Text style={styles.emptyText}>{t('booking.noBookings')}</Text>
               <Text style={styles.emptySubtext}>
-                Start booking services to see them here
+                {t('booking.startBooking')}
               </Text>
             </View>
           )
@@ -214,9 +215,9 @@ export default function BookingsScreen() {
         ) : (
           <View style={styles.emptyState}>
             <Ionicons name="list-outline" size={64} color={colors.gray[300]} />
-            <Text style={styles.emptyText}>No requests</Text>
+            <Text style={styles.emptyText}>{t('booking.noRequests')}</Text>
             <Text style={styles.emptySubtext}>
-              Booking requests will appear here
+              {t('booking.requestsWillAppear')}
             </Text>
           </View>
         )}
