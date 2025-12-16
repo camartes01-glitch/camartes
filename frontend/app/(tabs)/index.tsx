@@ -13,6 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../../contexts/AuthContext';
@@ -21,30 +22,31 @@ import { colors, spacing, borderRadius, typography, shadows } from '../../consta
 const { width } = Dimensions.get('window');
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
-const FREELANCER_SERVICES = [
-  { id: 'photographer', name: 'Photographer', icon: 'camera' },
-  { id: 'videographer', name: 'Videographer', icon: 'videocam' },
-  { id: 'album_designer', name: 'Album Designer', icon: 'images' },
-  { id: 'video_editor', name: 'Video Editor', icon: 'film' },
-  { id: 'web_live_services', name: 'Web Live', icon: 'wifi' },
-  { id: 'led_wall', name: 'LED Wall', icon: 'tv' },
-];
-
-const BUSINESS_SERVICES = [
-  { id: 'photography_firm', name: 'Photography Firm', icon: 'business' },
-  { id: 'camera_rental', name: 'Camera Rental', icon: 'camera' },
-  { id: 'service_centres', name: 'Service Centres', icon: 'construct' },
-  { id: 'outdoor_studios', name: 'Outdoor Studios', icon: 'home' },
-  { id: 'editing_studios', name: 'Editing Studios', icon: 'film' },
-  { id: 'printing_labs', name: 'Printing Labs', icon: 'print' },
-];
-
 export default function HomeScreen() {
   const router = useRouter();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const [blogs, setBlogs] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+
+  const FREELANCER_SERVICES = [
+    { id: 'photographer', name: t('services.photographer'), icon: 'camera' },
+    { id: 'videographer', name: t('services.videographer'), icon: 'videocam' },
+    { id: 'album_designer', name: t('services.albumDesigner'), icon: 'images' },
+    { id: 'video_editor', name: t('services.videoEditor'), icon: 'film' },
+    { id: 'web_live_services', name: t('services.webLive'), icon: 'wifi' },
+    { id: 'led_wall', name: t('services.ledWall'), icon: 'tv' },
+  ];
+
+  const BUSINESS_SERVICES = [
+    { id: 'photography_firm', name: t('services.photographyFirm'), icon: 'business' },
+    { id: 'camera_rental', name: t('services.cameraRental'), icon: 'camera' },
+    { id: 'service_centres', name: t('services.serviceCentres'), icon: 'construct' },
+    { id: 'outdoor_studios', name: t('services.outdoorStudios'), icon: 'home' },
+    { id: 'editing_studios', name: t('services.editingStudios'), icon: 'film' },
+    { id: 'printing_labs', name: t('services.printingLabs'), icon: 'print' },
+  ];
 
   useEffect(() => {
     loadData();
@@ -106,8 +108,11 @@ export default function HomeScreen() {
       >
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Ionicons name="camera" size={32} color={colors.primary[600]} />
-            <Text style={styles.headerTitle}>Camartes</Text>
+            <Image 
+              source={require('../../assets/images/camartes-logo.png')} 
+              style={styles.headerLogo}
+              resizeMode="contain"
+            />
           </View>
           <View style={styles.headerRight}>
             <TouchableOpacity
@@ -137,9 +142,9 @@ export default function HomeScreen() {
           }
         >
           <View style={styles.heroBanner}>
-            <Text style={styles.heroTitle}>Find Your Creative Partner</Text>
+            <Text style={styles.heroTitle}>{t('home.findCreativePartner')}</Text>
             <Text style={styles.heroSubtitle}>
-              Connect with professional photographers, videographers, and creative services
+              {t('home.connectWithProfessionals')}
             </Text>
             <TouchableOpacity
               style={styles.heroButton}
@@ -151,14 +156,14 @@ export default function HomeScreen() {
                 end={{ x: 1, y: 0 }}
                 style={styles.heroButtonGradient}
               >
-                <Text style={styles.heroButtonText}>Browse Services</Text>
+                <Text style={styles.heroButtonText}>{t('home.browseServices')}</Text>
                 <Ionicons name="arrow-forward" size={20} color={colors.white} />
               </LinearGradient>
             </TouchableOpacity>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Freelancer Services</Text>
+            <Text style={styles.sectionTitle}>{t('home.freelancerServices')}</Text>
             <View style={styles.servicesGrid}>
               {FREELANCER_SERVICES.map((service) => (
                 <TouchableOpacity
@@ -184,7 +189,7 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Business Services</Text>
+            <Text style={styles.sectionTitle}>{t('home.businessServices')}</Text>
             <View style={styles.servicesGrid}>
               {BUSINESS_SERVICES.map((service) => (
                 <TouchableOpacity
@@ -214,9 +219,9 @@ export default function HomeScreen() {
           {blogs.length > 0 && (
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>Latest News</Text>
+                <Text style={styles.sectionTitle}>{t('home.latestNews')}</Text>
                 <TouchableOpacity onPress={() => router.push('/blog-list')}>
-                  <Text style={styles.seeAllText}>See All</Text>
+                  <Text style={styles.seeAllText}>{t('common.seeAll')}</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView
@@ -254,21 +259,21 @@ export default function HomeScreen() {
               onPress={() => router.push('/favorites')}
             >
               <Ionicons name="heart" size={28} color={colors.pink[500]} />
-              <Text style={styles.quickActionText}>Favorites</Text>
+              <Text style={styles.quickActionText}>{t('common.favorites')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.quickActionCard}
               onPress={() => router.push('/equipment')}
             >
               <Ionicons name="camera-outline" size={28} color={colors.info} />
-              <Text style={styles.quickActionText}>Equipment</Text>
+              <Text style={styles.quickActionText}>{t('common.equipment')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.quickActionCard}
               onPress={() => router.push('/support')}
             >
               <Ionicons name="help-circle" size={28} color={colors.success} />
-              <Text style={styles.quickActionText}>Support</Text>
+              <Text style={styles.quickActionText}>{t('common.support')}</Text>
             </TouchableOpacity>
           </View>
 
@@ -298,7 +303,10 @@ const styles = StyleSheet.create({
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm,
+  },
+  headerLogo: {
+    width: 120,
+    height: 40,
   },
   headerTitle: {
     ...typography.h3,
