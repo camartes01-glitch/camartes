@@ -1068,6 +1068,20 @@ async def get_equipment(category: Optional[str] = None):
     equipment = await db.equipment.find(query, {"_id": 0}).to_list(100)
     return equipment
 
+@api_router.get("/equipment/brands")
+async def get_equipment_brands(equipment_type: str):
+    """Get brands for equipment type (for autocomplete)"""
+    if equipment_type in EQUIPMENT_DATA:
+        return {"brands": list(EQUIPMENT_DATA[equipment_type].keys())}
+    return {"brands": []}
+
+@api_router.get("/equipment/models")
+async def get_equipment_models(equipment_type: str, brand: str):
+    """Get models for equipment type and brand (for autocomplete)"""
+    if equipment_type in EQUIPMENT_DATA and brand in EQUIPMENT_DATA[equipment_type]:
+        return {"models": EQUIPMENT_DATA[equipment_type][brand]}
+    return {"models": []}
+
 @api_router.get("/equipment/my-equipment")
 async def get_my_equipment(current_user: User = Depends(require_auth)):
     """Get user's equipment"""
