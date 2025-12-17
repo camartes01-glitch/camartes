@@ -15,6 +15,8 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="login" />
           <Stack.Screen name="profile-setup" />
+          {/* Adding an empty fragment to resolve a potential children prop issue */}
+          <></>
         </Stack>
       </AuthProvider>
     </I18nextProvider>
