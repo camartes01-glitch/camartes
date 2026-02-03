@@ -12,12 +12,10 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from '../services/api';
 import { colors, spacing, borderRadius, typography } from '../constants/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
 export default function ProfileSetupScreen() {
   const router = useRouter();
@@ -41,21 +39,13 @@ export default function ProfileSetupScreen() {
 
     try {
       setLoading(true);
-      const token = await AsyncStorage.getItem('session_token');
-
-      await axios.post(
-        `${API_URL}/api/profile/setup`,
-        {
-          full_name: fullName,
-          contact_number: contactNumber,
-          city,
-          is_freelancer: isFreelancer,
-          is_business: isBusiness,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await api.post('/api/profile/setup', {
+        full_name: fullName,
+        contact_number: contactNumber,
+        city,
+        is_freelancer: isFreelancer,
+        is_business: isBusiness,
+      });
 
       router.replace('/(tabs)');
     } catch (error) {

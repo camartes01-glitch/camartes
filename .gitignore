@@ -2,3 +2,15 @@
 .idx/
 frontend/.metro-cache/
 /tmp/
+# Python
+venv/
+.env
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Expo / React Native
+.expo/
+dist/
