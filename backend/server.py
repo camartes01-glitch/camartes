@@ -2,15 +2,25 @@ from fastapi import (
     FastAPI, APIRouter, Depends, HTTPException,
     Request, status, Header
 )
+from middleware.session import session_middleware
+from routes.auth import router as auth_router
+from routes.profile import router as profile_router, analytics_router
+from routes.bookings import router as bookings_router
+from routes.providers import router as providers_router
+from routes.equipment import router as equipment_router
+from routes.notifications import router as notifications_router
+from routes.messages import router as messages_router
+from routes.misc import router as misc_router
+from scheduler import start_scheduler
 from starlette.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 from typing import Optional
-
-# Correctly import from the local files in the same directory
+from routes import aadhaar
 import models
 from database import SessionLocal, engine, get_db
-
+from dependencies import get_current_user
+from routers import kyc
 # This command creates the database tables based on your models
 # if they don't already exist. It's safe to run on every startup.
 models.Base.metadata.create_all(bind=engine)
@@ -38,27 +48,6 @@ def health_check():
     return {"status": "ok"}
 
 
-# --- Authentication (Placeholder) ---
-# This is a placeholder for your real authentication logic. It currently does not
-# authenticate anyone, which we'll need to fix later.
-def get_current_user(
-    db: Session = Depends(get_db)
-) -> Optional[models.User]:
-    # In a real app, you would validate a token here.
-    # For now, we will simulate finding the first user in the database.
-    # IMPORTANT: This is NOT secure and for placeholder purposes only.
-    return db.query(models.User).first()
-
-def require_auth(
-    user: Optional[models.User] = Depends(get_current_user)
-) -> models.User:
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Authentication required. No user found."
-        )
-    return user
-
 # --- API Endpoints ---
 
 # All your Pydantic models (like ReviewCreate) and endpoints go here.
@@ -75,7 +64,7 @@ class ReviewCreate(BaseModel):
 @api_router.post("/reviews")
 def create_review(
     review: ReviewCreate,
-    current_user: models.User = Depends(require_auth),
+    current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     review_data = models.Review(
@@ -90,9 +79,45 @@ def create_review(
 @api_router.get("/reviews/{provider_id}")
 def get_reviews(provider_id: str, db: Session = Depends(get_db)):
     return db.query(models.Review).filter(models.Review.provider_id == provider_id).all()
-
+@app.on_event("startup")
+def startup():
+    start_scheduler()
 
 # --- Register the API Router ---
 # This adds all the routes we defined on `api_router` (e.g., /api/reviews)
 # to our main application.
 app.include_router(api_router)
+
+# Auth routes under /api/auth
+api_router.include_router(auth_router)
+
+# Profile routes under /api/profile and /api/analytics
+api_router.include_router(profile_router)
+api_router.include_router(analytics_router)
+
+# Bookings routes under /api/bookings
+api_router.include_router(bookings_router)
+
+# Providers, services, favorites, portfolio under /api
+api_router.include_router(providers_router)
+
+# Equipment and inventory routes under /api
+api_router.include_router(equipment_router)
+
+# Notifications under /api/notifications
+api_router.include_router(notifications_router)
+
+# Messages/chat under /api/messages
+api_router.include_router(messages_router)
+
+# Misc (feedback, chatbot, blogs, packages) under /api
+api_router.include_router(misc_router)
+
+# Aadhaar routes (not under /api prefix)
+app.include_router(aadhaar.router)
+
+# Session middleware for Bearer token validation
+app.middleware("http")(session_middleware)
+
+# KYC routes
+app.include_router(kyc.router)

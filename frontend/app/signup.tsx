@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Dimensions,
   TextInput,
   KeyboardAvoidingView,
   Platform,
@@ -20,29 +19,33 @@ import { useAuth } from '../contexts/AuthContext';
 import { colors, spacing, borderRadius, typography } from '../constants/theme';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 
-const { width, height } = Dimensions.get('window');
-
-export default function LoginScreen() {
-  const { login } = useAuth();
+export default function SignupScreen() {
+  const { signup } = useAuth();
   const { t } = useTranslation();
   const router = useRouter();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email.trim() || !password) {
-      Alert.alert('Error', t('login.fillAllFields'));
+  const handleSignup = async () => {
+    if (!name.trim() || !email.trim() || !password) {
+      Alert.alert('Error', t('signup.fillAllFields'));
+      return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert('Error', t('signup.passwordMinLength'));
       return;
     }
 
     try {
       setLoading(true);
-      await login(email.trim(), password);
+      await signup(email.trim(), name.trim(), password);
       router.replace('/(tabs)');
     } catch (err: unknown) {
       const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
-      Alert.alert('Login Failed', msg || t('login.invalidCredentials'));
+      Alert.alert('Signup Failed', msg || t('signup.error'));
     } finally {
       setLoading(false);
     }
@@ -76,13 +79,21 @@ export default function LoginScreen() {
                 style={styles.logo}
                 resizeMode="contain"
               />
-              <Text style={styles.tagline}>{t('login.title')}</Text>
+              <Text style={styles.tagline}>{t('signup.title')}</Text>
             </View>
 
             <View style={styles.form}>
               <TextInput
                 style={styles.input}
-                placeholder={t('login.emailPlaceholder')}
+                placeholder={t('signup.namePlaceholder')}
+                placeholderTextColor={colors.gray[400]}
+                value={name}
+                onChangeText={setName}
+                autoCapitalize="words"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder={t('signup.emailPlaceholder')}
                 placeholderTextColor={colors.gray[400]}
                 value={email}
                 onChangeText={setEmail}
@@ -92,7 +103,7 @@ export default function LoginScreen() {
               />
               <TextInput
                 style={styles.input}
-                placeholder={t('login.passwordPlaceholder')}
+                placeholder={t('signup.passwordPlaceholder')}
                 placeholderTextColor={colors.gray[400]}
                 value={password}
                 onChangeText={setPassword}
@@ -100,8 +111,8 @@ export default function LoginScreen() {
               />
 
               <TouchableOpacity
-                style={styles.loginButton}
-                onPress={handleLogin}
+                style={styles.signupButton}
+                onPress={handleSignup}
                 disabled={loading}
                 activeOpacity={0.8}
               >
@@ -114,24 +125,22 @@ export default function LoginScreen() {
                   {loading ? (
                     <ActivityIndicator color={colors.white} />
                   ) : (
-                    <Text style={styles.buttonText}>{t('login.signIn')}</Text>
+                    <Text style={styles.buttonText}>{t('signup.createAccount')}</Text>
                   )}
                 </LinearGradient>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.signupLink}
-                onPress={() => router.push('/signup')}
+                style={styles.loginLink}
+                onPress={() => router.back()}
                 disabled={loading}
               >
-                <Text style={styles.signupText}>
-                  {t('login.noAccount')}{' '}
-                  <Text style={styles.signupLinkText}>{t('login.signUp')}</Text>
+                <Text style={styles.loginText}>
+                  {t('signup.haveAccount')}{' '}
+                  <Text style={styles.loginLinkText}>{t('signup.signIn')}</Text>
                 </Text>
               </TouchableOpacity>
             </View>
-
-            <Text style={styles.footer}>{t('login.termsAgreement')}</Text>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -209,7 +218,7 @@ const styles = StyleSheet.create({
     color: colors.gray[900],
     marginBottom: spacing.md,
   },
-  loginButton: {
+  signupButton: {
     width: '100%',
     marginTop: spacing.sm,
     marginBottom: spacing.lg,
@@ -225,21 +234,15 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: '600',
   },
-  signupLink: {
+  loginLink: {
     alignItems: 'center',
   },
-  signupText: {
+  loginText: {
     ...typography.body,
     color: colors.gray[600],
   },
-  signupLinkText: {
+  loginLinkText: {
     color: colors.primary[600],
     fontWeight: '600',
-  },
-  footer: {
-    ...typography.caption,
-    color: colors.gray[500],
-    textAlign: 'center',
-    paddingHorizontal: spacing.lg,
   },
 });

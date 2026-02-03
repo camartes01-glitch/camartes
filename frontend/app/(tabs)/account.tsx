@@ -13,14 +13,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from '../../services/api';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { colors, spacing, borderRadius, typography, shadows } from '../../constants/theme';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
 interface MenuItem {
   id: string;
@@ -53,11 +51,7 @@ export default function AccountScreen() {
 
   const loadProfile = async () => {
     try {
-      const token = await AsyncStorage.getItem('session_token');
-      const response = await axios.get(
-        `${API_URL}/api/profile`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await api.get('/api/profile');
       setProfile(response.data);
     } catch (error) {
       console.error('Load profile error:', error);
@@ -66,11 +60,7 @@ export default function AccountScreen() {
 
   const loadAnalytics = async () => {
     try {
-      const token = await AsyncStorage.getItem('session_token');
-      const response = await axios.get(
-        `${API_URL}/api/analytics/dashboard`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await api.get('/api/analytics/dashboard');
       setAnalytics(response.data);
     } catch (error) {
       console.error('Load analytics error:', error);
